@@ -1,0 +1,18 @@
+services:
+  database:
+    container_name: expenses_db
+    image: postgres:15
+    env_file:
+      - .env
+    environment:
+      - TZ: America/Sao_Paulo
+      - POSTGRES_USER: "${DB_USER}"
+      - POSTGRES_PASSWORD: "${DB_PASSWORD}"
+      - DB_NAME: "${DB_NAME}"
+    ports:
+      - "5433:5432"
+    networks:
+      expenses-app-network
+networks:
+  expenses-app-network:
+    driver: bridge  
