@@ -11,7 +11,9 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 @Entity
-@Table(name = "users")
+@Table(
+    name = "users",
+    uniqueConstraints = {@UniqueConstraint(name = "unique_email", columnNames = "email")})
 @SequenceGenerator(name = "seq_user", sequenceName = "seq_user", allocationSize = 1)
 public class User implements Serializable {
 
