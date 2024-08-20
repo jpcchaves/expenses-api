@@ -31,6 +31,10 @@ public class ExpenseSource implements Serializable {
 
   public ExpenseSource() {}
 
+  public ExpenseSource(String name) {
+    this.name = name;
+  }
+
   public ExpenseSource(Long id, String name) {
     this.id = id;
     this.name = name;
