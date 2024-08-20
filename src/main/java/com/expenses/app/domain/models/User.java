@@ -1,4 +1,4 @@
-package com.expenses.app.domain;
+package com.expenses.app.domain.models;
 
 import jakarta.persistence.*;
 import java.io.Serial;
