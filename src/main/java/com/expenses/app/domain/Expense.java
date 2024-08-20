@@ -16,6 +16,9 @@ public class Expense implements Serializable {
   @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_expense")
   private Long id;
 
+  @Column(nullable = false, length = 100)
+  private String expenseTitle;
+
   @ManyToOne(optional = false, fetch = FetchType.LAZY)
   @JoinColumn(
       name = "user_id",
