@@ -1,9 +1,14 @@
 package com.expenses.app.domain;
 
 import jakarta.persistence.*;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
+
 import java.io.Serial;
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.Objects;
 
 @Entity
 @Table(name = "expenses")
@@ -26,9 +31,119 @@ public class Expense implements Serializable {
       foreignKey = @ForeignKey(value = ConstraintMode.CONSTRAINT, name = "user_fk"))
   private User user;
 
+  @ManyToOne(optional = false, fetch = FetchType.LAZY)
+  @JoinColumn(
+      name = "expense_source_id",
+      nullable = false,
+      foreignKey = @ForeignKey(value = ConstraintMode.CONSTRAINT, name = "expense_source_fk"))
+  private ExpenseSource expenseSource;
+
   @Column(nullable = false)
   @Temporal(TemporalType.DATE)
   private LocalDate dueDate;
 
-  // TODO: implement attributes
+  @CreationTimestamp private LocalDateTime createdAt;
+
+  @UpdateTimestamp private LocalDateTime updatedAt;
+
+  public Expense() {}
+
+  public Expense(
+      Long id,
+      String expenseTitle,
+      User user,
+      ExpenseSource expenseSource,
+      LocalDate dueDate,
+      LocalDateTime createdAt,
+      LocalDateTime updatedAt) {
+    this.id = id;
+    this.expenseTitle = expenseTitle;
+    this.user = user;
+    this.expenseSource = expenseSource;
+    this.dueDate = dueDate;
+    this.createdAt = createdAt;
+    this.updatedAt = updatedAt;
+  }
+
+  public Long getId() {
+    return id;
+  }
+
+  public void setId(Long id) {
+    this.id = id;
+  }
+
+  public String getExpenseTitle() {
+    return expenseTitle;
+  }
+
+  public void setExpenseTitle(String expenseTitle) {
+    this.expenseTitle = expenseTitle;
+  }
+
+  public User getUser() {
+    return user;
+  }
+
+  public void setUser(User user) {
+    this.user = user;
+  }
+
+  public ExpenseSource getExpenseSource() {
+    return expenseSource;
+  }
+
+  public void setExpenseSource(ExpenseSource expenseSource) {
+    this.expenseSource = expenseSource;
+  }
+
+  public LocalDate getDueDate() {
+    return dueDate;
+  }
+
+  public void setDueDate(LocalDate dueDate) {
+    this.dueDate = dueDate;
+  }
+
+  public LocalDateTime getCreatedAt() {
+    return createdAt;
+  }
+
+  public void setCreatedAt(LocalDateTime createdAt) {
+    this.createdAt = createdAt;
+  }
+
+  public LocalDateTime getUpdatedAt() {
+    return updatedAt;
+  }
+
+  public void setUpdatedAt(LocalDateTime updatedAt) {
+    this.updatedAt = updatedAt;
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (o == null || getClass() != o.getClass()) return false;
+    Expense expense = (Expense) o;
+    return Objects.equals(id, expense.id);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hashCode(id);
+  }
+
+  @Override
+  public String toString() {
+    return "Expense{"
+        + "id="
+        + id
+        + ", expenseTitle='"
+        + expenseTitle
+        + '\''
+        + ", dueDate="
+        + dueDate
+        + '}';
+  }
 }
