@@ -1,1 +1,34 @@
-spring.application.name=expenses-app
+spring:
+  datasource:
+    url: ${DB_URL}
+    username: ${DB_USER}
+    password: ${DB_PASSWORD}
+    type: com.zaxxer.hikari.HikariDataSource
+    hikari:
+      connection-timeout: 20000
+      minimum-idle: 10
+      maximum-pool-size: 50
+      idle-timeout: 10000
+      pool-name: PoolHikari
+      auto-commit: false
+    dbcp2:
+      pool-prepared-statements: true
+      max-open-prepared-statements: 100
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+       hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        '[show_sql]': true
+        '[format_sql]': true
+        jdbc:
+            '[batch_size]': 4
+        '[order_updates]': true
+        '[order_inserts]': true
+  session:
+    jdbc:
+      cleanup-cron: 0 0 4 * * *  
+  web:
+    locale-resolver: fixed
+    locale: pt_BR
