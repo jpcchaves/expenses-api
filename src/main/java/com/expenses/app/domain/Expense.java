@@ -1,14 +1,14 @@
 package com.expenses.app.domain;
 
 import jakarta.persistence.*;
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
-
 import java.io.Serial;
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Objects;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 @Entity
 @Table(name = "expenses")
@@ -42,6 +42,8 @@ public class Expense implements Serializable {
   @Temporal(TemporalType.DATE)
   private LocalDate dueDate;
 
+  private BigDecimal amount;
+
   @CreationTimestamp private LocalDateTime createdAt;
 
   @UpdateTimestamp private LocalDateTime updatedAt;
@@ -54,6 +56,7 @@ public class Expense implements Serializable {
       User user,
       ExpenseSource expenseSource,
       LocalDate dueDate,
+      BigDecimal amount,
       LocalDateTime createdAt,
       LocalDateTime updatedAt) {
     this.id = id;
@@ -61,6 +64,7 @@ public class Expense implements Serializable {
     this.user = user;
     this.expenseSource = expenseSource;
     this.dueDate = dueDate;
+    this.amount = amount;
     this.createdAt = createdAt;
     this.updatedAt = updatedAt;
   }
@@ -103,6 +107,14 @@ public class Expense implements Serializable {
 
   public void setDueDate(LocalDate dueDate) {
     this.dueDate = dueDate;
+  }
+
+  public BigDecimal getAmount() {
+    return amount;
+  }
+
+  public void setAmount(BigDecimal amount) {
+    this.amount = amount;
   }
 
   public LocalDateTime getCreatedAt() {
