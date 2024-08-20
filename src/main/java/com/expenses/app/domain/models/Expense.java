@@ -42,7 +42,8 @@ public class Expense implements Serializable {
   @Temporal(TemporalType.DATE)
   private LocalDate dueDate;
 
-  private BigDecimal amount;
+  @Column(nullable = false)
+  private BigDecimal amount = BigDecimal.ZERO;
 
   @CreationTimestamp private LocalDateTime createdAt;
 
