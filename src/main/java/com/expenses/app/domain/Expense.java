@@ -3,6 +3,7 @@ package com.expenses.app.domain;
 import jakarta.persistence.*;
 import java.io.Serial;
 import java.io.Serializable;
+import java.time.LocalDate;
 
 @Entity
 @Table(name = "expenses")
@@ -21,6 +22,10 @@ public class Expense implements Serializable {
       nullable = false,
       foreignKey = @ForeignKey(value = ConstraintMode.CONSTRAINT, name = "user_fk"))
   private User user;
+
+  @Column(nullable = false)
+  @Temporal(TemporalType.DATE)
+  private LocalDate dueDate;
 
   // TODO: implement attributes
 }
