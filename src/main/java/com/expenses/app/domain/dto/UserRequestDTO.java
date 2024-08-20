@@ -35,35 +35,31 @@ public class UserRequestDTO implements Serializable {
     return name;
   }
 
-  public UserRequestDTO setName(String name) {
+  public void setName(String name) {
     this.name = name;
-    return this;
   }
 
   public String getEmail() {
     return email;
   }
 
-  public UserRequestDTO setEmail(String email) {
+  public void setEmail(String email) {
     this.email = email;
-    return this;
   }
 
   public String getPassword() {
     return password;
   }
 
-  public UserRequestDTO setPassword(String password) {
+  public void setPassword(String password) {
     this.password = password;
-    return this;
   }
 
   public String getConfirmPassword() {
     return confirmPassword;
   }
 
-  public UserRequestDTO setConfirmPassword(String confirmPassword) {
+  public void setConfirmPassword(String confirmPassword) {
     this.confirmPassword = confirmPassword;
-    return this;
   }
 }
