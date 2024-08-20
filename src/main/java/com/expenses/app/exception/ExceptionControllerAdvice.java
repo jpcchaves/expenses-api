@@ -52,4 +52,17 @@ public class ExceptionControllerAdvice extends ResponseEntityExceptionHandler {
 
     return new ResponseEntity<>(exceptionResponse, HttpStatus.BAD_REQUEST);
   }
+
+  @ExceptionHandler(ResourceNotFoundException.class)
+  public final ResponseEntity<ExceptionResponseDTO> handleAccessDeniedException(
+      ResourceNotFoundException ex, WebRequest request) {
+
+    ExceptionResponseDTO exceptionResponse =
+        ExceptionResponseDTO.builder()
+            .setMessage(ex.getMessage())
+            .setDetails(request.getDescription(false))
+            .build();
+
+    return new ResponseEntity<>(exceptionResponse, HttpStatus.NOT_FOUND);
+  }
 }
