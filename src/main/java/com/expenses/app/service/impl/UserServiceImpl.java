@@ -33,7 +33,7 @@ public class UserServiceImpl implements UserService {
 
     Role role =
         roleRepository
-            .findByName(RoleType.ROLE_USER.roleType())
+            .findByName(RoleType.ROLE_TEST.roleType())
             .orElseThrow(() -> new RuntimeException(""));
 
     User user =
