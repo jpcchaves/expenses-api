@@ -16,30 +16,27 @@ public class UserResponseDTO {
     this.email = email;
   }
 
-  public Long id() {
+  public Long getId() {
     return id;
   }
 
-  public UserResponseDTO setId(Long id) {
+  public void setId(Long id) {
     this.id = id;
-    return this;
   }
 
-  public String name() {
+  public String getName() {
     return name;
   }
 
-  public UserResponseDTO setName(String name) {
+  public void setName(String name) {
     this.name = name;
-    return this;
   }
 
-  public String email() {
+  public String getEmail() {
     return email;
   }
 
-  public UserResponseDTO setEmail(String email) {
+  public void setEmail(String email) {
     this.email = email;
-    return this;
   }
 }
