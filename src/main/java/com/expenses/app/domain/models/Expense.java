@@ -70,6 +70,19 @@ public class Expense implements Serializable {
     this.updatedAt = updatedAt;
   }
 
+  public Expense(
+      String expenseTitle,
+      User user,
+      ExpenseSource expenseSource,
+      LocalDate dueDate,
+      BigDecimal amount) {
+    this.expenseTitle = expenseTitle;
+    this.user = user;
+    this.expenseSource = expenseSource;
+    this.dueDate = dueDate;
+    this.amount = amount;
+  }
+
   public Long getId() {
     return id;
   }
