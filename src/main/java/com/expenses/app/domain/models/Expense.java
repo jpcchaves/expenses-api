@@ -3,7 +3,6 @@ package com.expenses.app.domain.models;
 import jakarta.persistence.*;
 import java.io.Serial;
 import java.io.Serializable;
-import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Objects;
@@ -42,9 +41,6 @@ public class Expense implements Serializable {
   @Temporal(TemporalType.DATE)
   private LocalDate dueDate;
 
-  @Column(nullable = false)
-  private BigDecimal amount = BigDecimal.ZERO;
-
   @CreationTimestamp private LocalDateTime createdAt;
 
   @UpdateTimestamp private LocalDateTime updatedAt;
@@ -57,7 +53,6 @@ public class Expense implements Serializable {
       User user,
       ExpenseSource expenseSource,
       LocalDate dueDate,
-      BigDecimal amount,
       LocalDateTime createdAt,
       LocalDateTime updatedAt) {
     this.id = id;
@@ -65,22 +60,15 @@ public class Expense implements Serializable {
     this.user = user;
     this.expenseSource = expenseSource;
     this.dueDate = dueDate;
-    this.amount = amount;
     this.createdAt = createdAt;
     this.updatedAt = updatedAt;
   }
 
-  public Expense(
-      String expenseTitle,
-      User user,
-      ExpenseSource expenseSource,
-      LocalDate dueDate,
-      BigDecimal amount) {
+  public Expense(String expenseTitle, User user, ExpenseSource expenseSource, LocalDate dueDate) {
     this.expenseTitle = expenseTitle;
     this.user = user;
     this.expenseSource = expenseSource;
     this.dueDate = dueDate;
-    this.amount = amount;
   }
 
   public Long getId() {
@@ -121,14 +109,6 @@ public class Expense implements Serializable {
 
   public void setDueDate(LocalDate dueDate) {
     this.dueDate = dueDate;
-  }
-
-  public BigDecimal getAmount() {
-    return amount;
-  }
-
-  public void setAmount(BigDecimal amount) {
-    this.amount = amount;
   }
 
   public LocalDateTime getCreatedAt() {

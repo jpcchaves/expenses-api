@@ -21,28 +21,14 @@ public class ExpenseRequestDTO {
   @FutureOrPresent(message = "A data precisa ser hoje ou futura!")
   private LocalDate dueDate;
 
-  @NotNull(message = "O valor não pode ser nulo!")
-  @PositiveOrZero(message = "O valor não pode ser negativo!")
-  @Min(value = 0, message = "O valor deve ser maior ou igual a zero!")
-  @Digits(
-      integer = 10,
-      fraction = 2,
-      message = "O valor deve ter no máximo 10 dígitos inteiros e 2 dígitos fracionários")
-  private BigDecimal amount;
-
   public ExpenseRequestDTO() {}
 
   public ExpenseRequestDTO(
-      String expenseTitle,
-      Long userId,
-      Long expenseSourceId,
-      LocalDate dueDate,
-      BigDecimal amount) {
+      String expenseTitle, Long userId, Long expenseSourceId, LocalDate dueDate) {
     this.expenseTitle = expenseTitle;
     this.userId = userId;
     this.expenseSourceId = expenseSourceId;
     this.dueDate = dueDate;
-    this.amount = amount;
   }
 
   public String getExpenseTitle() {
@@ -75,13 +61,5 @@ public class ExpenseRequestDTO {
 
   public void setDueDate(LocalDate dueDate) {
     this.dueDate = dueDate;
-  }
-
-  public BigDecimal getAmount() {
-    return amount;
-  }
-
-  public void setAmount(BigDecimal amount) {
-    this.amount = amount;
   }
 }
