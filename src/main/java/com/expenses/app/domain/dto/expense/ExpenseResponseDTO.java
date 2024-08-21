@@ -8,15 +8,13 @@ public class ExpenseResponseDTO {
   private Long id;
   private String expenseTitle;
   private LocalDate dueDate;
-  private BigDecimal amount;
 
   public ExpenseResponseDTO() {}
 
-  public ExpenseResponseDTO(Long id, String expenseTitle, LocalDate dueDate, BigDecimal amount) {
+  public ExpenseResponseDTO(Long id, String expenseTitle, LocalDate dueDate) {
     this.id = id;
     this.expenseTitle = expenseTitle;
     this.dueDate = dueDate;
-    this.amount = amount;
   }
 
   public Long getId() {
@@ -41,13 +39,5 @@ public class ExpenseResponseDTO {
 
   public void setDueDate(LocalDate dueDate) {
     this.dueDate = dueDate;
-  }
-
-  public BigDecimal getAmount() {
-    return amount;
-  }
-
-  public void setAmount(BigDecimal amount) {
-    this.amount = amount;
   }
 }

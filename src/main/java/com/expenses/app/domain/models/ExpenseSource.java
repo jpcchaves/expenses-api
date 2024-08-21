@@ -9,7 +9,13 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 @Entity
-@Table(name = "expense_sources")
+@Table(
+    name = "expense_sources",
+    uniqueConstraints = {
+      @UniqueConstraint(
+          name = "unique_expense_source_name",
+          columnNames = {"name"})
+    })
 @SequenceGenerator(
     name = "seq_expense_source",
     sequenceName = "seq_expense_source",
@@ -22,7 +28,7 @@ public class ExpenseSource implements Serializable {
   @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_expense_source")
   private Long id;
 
-  @Column(nullable = false)
+  @Column(unique = true, nullable = false)
   private String name;
 
   @CreationTimestamp private LocalDateTime createdAt;

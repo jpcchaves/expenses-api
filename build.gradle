@@ -24,6 +24,8 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'net.datafaker:datafaker:2.3.1'
 
+    runtimeOnly group: 'org.flywaydb', name: 'flyway-database-postgresql', version: '10.17.1'
+
     runtimeOnly 'org.postgresql:postgresql'
 
     testImplementation 'org.springframework.boot:spring-boot-starter-test'

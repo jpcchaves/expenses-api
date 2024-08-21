@@ -5,6 +5,7 @@ import com.expenses.app.domain.dto.user.UserResponseDTO;
 import com.expenses.app.domain.enums.RoleType;
 import com.expenses.app.domain.models.Role;
 import com.expenses.app.domain.models.User;
+import com.expenses.app.exception.BadRequestException;
 import com.expenses.app.persistence.repository.RoleRepository;
 import com.expenses.app.persistence.repository.UserRepository;
 import com.expenses.app.service.UserService;
@@ -28,13 +29,18 @@ public class UserServiceImpl implements UserService {
 
     if (!Objects.equals(requestDTO.getPassword(), requestDTO.getConfirmPassword())) {
 
-      throw new RuntimeException("As senhas devem ser iguais!");
+      throw new BadRequestException("As senhas devem ser iguais!");
+    }
+
+    if (userRepository.existsByEmail(requestDTO.getEmail())) {
+
+      throw new BadRequestException("Email ja cadastrado!");
     }
 
     Role role =
         roleRepository
-            .findByName(RoleType.ROLE_USER.roleType())
-            .orElseThrow(() -> new RuntimeException(""));
+            .findByName(RoleType.ROLE_TEST.roleType())
+            .orElseThrow(() -> new BadRequestException(""));
 
     User user =
         new User(
@@ -50,19 +56,19 @@ public class UserServiceImpl implements UserService {
 
     if (!Objects.equals(requestDTO.getPassword(), requestDTO.getConfirmPassword())) {
 
-      throw new RuntimeException("As senhas devem ser iguais!");
+      throw new BadRequestException("As senhas devem ser iguais!");
     }
 
     User user =
         userRepository
             .findById(userId)
-            .orElseThrow(() -> new RuntimeException("Usuario inexistente!"));
+            .orElseThrow(() -> new BadRequestException("Usuario inexistente!"));
 
     if (!Objects.equals(requestDTO.getEmail(), user.getEmail())) {
 
       if (userRepository.existsByEmail(requestDTO.getEmail())) {
 
-        throw new RuntimeException("Email ja cadastrado!");
+        throw new BadRequestException("Email ja cadastrado!");
       }
     }
 

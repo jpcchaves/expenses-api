@@ -46,17 +46,11 @@ public class ExpenseServiceImpl implements ExpenseService {
             .orElseThrow(() -> new ResourceNotFoundException("Fonte de custo não encontrado!"));
 
     Expense expense =
-        new Expense(
-            requestDTO.getExpenseTitle(),
-            user,
-            expenseSource,
-            requestDTO.getDueDate(),
-            requestDTO.getAmount());
+        new Expense(requestDTO.getExpenseTitle(), user, expenseSource, requestDTO.getDueDate());
 
     expense = expenseRepository.saveAndFlush(expense);
 
-    return new ExpenseResponseDTO(
-        expense.getId(), expense.getExpenseTitle(), expense.getDueDate(), expense.getAmount());
+    return new ExpenseResponseDTO(expense.getId(), expense.getExpenseTitle(), expense.getDueDate());
   }
 
   @Override
@@ -81,12 +75,10 @@ public class ExpenseServiceImpl implements ExpenseService {
     expense.setUser(user);
     expense.setExpenseSource(expenseSource);
     expense.setDueDate(requestDTO.getDueDate());
-    expense.setAmount(requestDTO.getAmount());
 
     expense = expenseRepository.saveAndFlush(expense);
 
-    return new ExpenseResponseDTO(
-        expense.getId(), expense.getExpenseTitle(), expense.getDueDate(), expense.getAmount());
+    return new ExpenseResponseDTO(expense.getId(), expense.getExpenseTitle(), expense.getDueDate());
   }
 
   @Override
@@ -99,10 +91,7 @@ public class ExpenseServiceImpl implements ExpenseService {
             .map(
                 expense ->
                     new ExpenseResponseDTO(
-                        expense.getId(),
-                        expense.getExpenseTitle(),
-                        expense.getDueDate(),
-                        expense.getAmount()))
+                        expense.getId(), expense.getExpenseTitle(), expense.getDueDate()))
             .toList();
 
     return new PaginationResponseDTO<ExpenseResponseDTO>()
@@ -124,7 +113,6 @@ public class ExpenseServiceImpl implements ExpenseService {
             .findById(expenseId)
             .orElseThrow(() -> new ResourceNotFoundException("Despesa não encontrada!"));
 
-    return new ExpenseResponseDTO(
-        expense.getId(), expense.getExpenseTitle(), expense.getDueDate(), expense.getAmount());
+    return new ExpenseResponseDTO(expense.getId(), expense.getExpenseTitle(), expense.getDueDate());
   }
 }
