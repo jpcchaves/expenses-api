@@ -151,40 +151,30 @@ ALTER TABLE public.users_roles OWNER TO postgres;
 -- Data for Name: expense_sources; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY public.expense_sources (id, created_at, name, updated_at) FROM stdin;
-\.
 
 
 --
 -- Data for Name: expenses; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY public.expenses (id, created_at, due_date, expense_title, updated_at, expense_source_id, user_id) FROM stdin;
-\.
 
 
 --
 -- Data for Name: roles; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY public.roles (id, name) FROM stdin;
-\.
 
 
 --
 -- Data for Name: users; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY public.users (id, created_at, email, name, password, updated_at) FROM stdin;
-\.
 
 
 --
 -- Data for Name: users_roles; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY public.users_roles (user_id, role_id) FROM stdin;
-\.
 
 
 --
@@ -240,19 +230,27 @@ ALTER TABLE ONLY public.roles
 
 
 --
--- Name: roles ukofx66keruapi6vyqpv6f2or37; Type: CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.roles
-    ADD CONSTRAINT ukofx66keruapi6vyqpv6f2or37 UNIQUE (name);
-
-
---
 -- Name: users unique_email; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY public.users
     ADD CONSTRAINT unique_email UNIQUE (email);
+
+
+--
+-- Name: expense_sources unique_expense_source_name; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.expense_sources
+    ADD CONSTRAINT unique_expense_source_name UNIQUE (name);
+
+
+--
+-- Name: roles unique_role_name; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.roles
+    ADD CONSTRAINT unique_role_name UNIQUE (name);
 
 
 --

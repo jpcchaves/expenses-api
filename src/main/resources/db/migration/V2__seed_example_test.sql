@@ -16,8 +16,8 @@ WHERE name='ROLE_TEST'));
 
 INSERT INTO expense_sources
 (id, created_at, "name", updated_at)
-VALUES(nextval('seq_expense_source'), CURRENT_TIMESTAMP, 'Assai', CURRENT_TIMESTAMP);
+VALUES(nextval('seq_expense_source'), CURRENT_TIMESTAMP, 'Fatura do Cartao', CURRENT_TIMESTAMP);
 
 INSERT INTO expenses
-(id, amount, created_at, due_date, expense_title, updated_at, expense_source_id, user_id)
-VALUES(nextval('seq_expense'), 240, CURRENT_TIMESTAMP, '2024-08-31', 'Despesa com a feira do mes de agosto', CURRENT_TIMESTAMP, (select id from expense_sources where name = 'Assai Atacadista'), (select id from users where email = 'test@test.com'));
+(id, created_at, due_date, expense_title, updated_at, expense_source_id, user_id)
+VALUES(nextval('seq_expense'), CURRENT_TIMESTAMP, '2024-08-31', 'Despesa com Cartao de Credito nubank', CURRENT_TIMESTAMP, (select id from expense_sources where name = 'Fatura do Cartao'), (select id from users where email = 'test@test.com'));
