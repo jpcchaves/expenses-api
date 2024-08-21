@@ -1,7 +1,6 @@
 package com.expenses.app.domain.dto.expense;
 
 import jakarta.validation.constraints.*;
-import java.math.BigDecimal;
 import java.time.LocalDate;
 
 public class ExpenseRequestDTO {
@@ -15,7 +14,6 @@ public class ExpenseRequestDTO {
 
   @NotNull(message = "A fonte da despesa não pode ser nula!")
   @Min(value = 1, message = "A fonte da despesa não pode ser nula!")
-  @NotBlank
   private Long expenseSourceId;
 
   @FutureOrPresent(message = "A data precisa ser hoje ou futura!")
