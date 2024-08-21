@@ -41,6 +41,9 @@ public class Expense implements Serializable {
   @Temporal(TemporalType.DATE)
   private LocalDate dueDate;
 
+  @Column(nullable = false)
+  private Boolean notificationActive = Boolean.TRUE;
+
   @CreationTimestamp private LocalDateTime createdAt;
 
   @UpdateTimestamp private LocalDateTime updatedAt;
@@ -69,6 +72,19 @@ public class Expense implements Serializable {
     this.user = user;
     this.expenseSource = expenseSource;
     this.dueDate = dueDate;
+  }
+
+  public Expense(
+      String expenseTitle,
+      User user,
+      ExpenseSource expenseSource,
+      LocalDate dueDate,
+      Boolean notificationActive) {
+    this.expenseTitle = expenseTitle;
+    this.user = user;
+    this.expenseSource = expenseSource;
+    this.dueDate = dueDate;
+    this.notificationActive = notificationActive;
   }
 
   public Long getId() {
@@ -109,6 +125,14 @@ public class Expense implements Serializable {
 
   public void setDueDate(LocalDate dueDate) {
     this.dueDate = dueDate;
+  }
+
+  public Boolean getNotificationActive() {
+    return notificationActive;
+  }
+
+  public void setNotificationActive(Boolean notificationActive) {
+    this.notificationActive = notificationActive;
   }
 
   public LocalDateTime getCreatedAt() {
