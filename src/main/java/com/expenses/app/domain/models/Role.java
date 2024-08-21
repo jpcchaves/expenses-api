@@ -6,7 +6,13 @@ import java.io.Serializable;
 import java.util.Objects;
 
 @Entity
-@Table(name = "roles")
+@Table(
+    name = "roles",
+    uniqueConstraints = {
+      @UniqueConstraint(
+          name = "unique_role_name",
+          columnNames = {"name"})
+    })
 @SequenceGenerator(name = "seq_role", sequenceName = "seq_role", allocationSize = 1)
 public class Role implements Serializable {
 
@@ -16,7 +22,7 @@ public class Role implements Serializable {
   @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_role")
   private Long id;
 
-  @Column(nullable = false, unique = true, length = 100)
+  @Column(unique = true, nullable = false, length = 100)
   private String name;
 
   public Role() {}
