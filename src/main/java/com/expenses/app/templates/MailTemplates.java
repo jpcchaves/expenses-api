@@ -1,5 +1,7 @@
 package com.expenses.app.templates;
 
+import com.expenses.app.domain.models.Expense;
+import java.util.List;
 import org.springframework.stereotype.Component;
 import org.thymeleaf.context.Context;
 import org.thymeleaf.spring6.SpringTemplateEngine;
@@ -13,11 +15,14 @@ public class MailTemplates {
     this.templateEngine = templateEngine;
   }
 
-  public String getNotifyExpenseTemplate() {
+  public String getNotifyExpenseTemplate(String name, List<Expense> expenseList) {
 
     Context context = new Context();
 
-    String htmlTemplate = templateEngine.process("notifyExpenseTemplate", context);
+    context.setVariable("name", name);
+    context.setVariable("expenses", expenseList);
+
+    String htmlTemplate = templateEngine.process("notify-expenses", context);
 
     return htmlTemplate;
   }
