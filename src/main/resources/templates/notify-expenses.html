@@ -45,7 +45,7 @@
     <tbody>
     <tr th:each="expense : ${expenses}">
         <td th:text="${expense.getExpenseTitle()}">Expense Name</td>
-        <td th:text="${#temporals.format(expense.getDueDate(), 'dd-MM-yyyy')}"></td>
+        <td th:text="${#temporals.format(expense.getDueDate(), 'dd/MM/yyyy')}"></td>
     </tr>
     </tbody>
 </table>
