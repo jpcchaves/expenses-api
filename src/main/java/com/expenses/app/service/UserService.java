@@ -1,7 +1,7 @@
 package com.expenses.app.service;
 
-import com.expenses.app.domain.dto.UserRequestDTO;
-import com.expenses.app.domain.dto.UserResponseDTO;
+import com.expenses.app.domain.dto.user.UserRequestDTO;
+import com.expenses.app.domain.dto.user.UserResponseDTO;
 
 public interface UserService {
 

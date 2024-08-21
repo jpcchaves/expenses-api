@@ -1,6 +1,6 @@
 package com.expenses.app.service.impl;
 
-import com.expenses.app.domain.dto.PaginationResponseDTO;
+import com.expenses.app.domain.dto.common.PaginationResponseDTO;
 import com.expenses.app.domain.dto.expense.ExpenseSourceRequestDTO;
 import com.expenses.app.domain.dto.expense.ExpenseSourceResponseDTO;
 import com.expenses.app.domain.models.ExpenseSource;

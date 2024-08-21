@@ -1,4 +1,4 @@
-package com.expenses.app.domain.dto;
+package com.expenses.app.domain.dto.common;
 
 import java.io.Serializable;
 import java.util.ArrayList;

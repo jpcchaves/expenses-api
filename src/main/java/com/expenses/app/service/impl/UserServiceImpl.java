@@ -1,7 +1,7 @@
 package com.expenses.app.service.impl;
 
-import com.expenses.app.domain.dto.UserRequestDTO;
-import com.expenses.app.domain.dto.UserResponseDTO;
+import com.expenses.app.domain.dto.user.UserRequestDTO;
+import com.expenses.app.domain.dto.user.UserResponseDTO;
 import com.expenses.app.domain.enums.RoleType;
 import com.expenses.app.domain.models.Role;
 import com.expenses.app.domain.models.User;

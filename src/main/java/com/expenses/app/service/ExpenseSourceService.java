@@ -1,6 +1,6 @@
 package com.expenses.app.service;
 
-import com.expenses.app.domain.dto.PaginationResponseDTO;
+import com.expenses.app.domain.dto.common.PaginationResponseDTO;
 import com.expenses.app.domain.dto.expense.ExpenseSourceRequestDTO;
 import com.expenses.app.domain.dto.expense.ExpenseSourceResponseDTO;
 import org.springframework.data.domain.Pageable;

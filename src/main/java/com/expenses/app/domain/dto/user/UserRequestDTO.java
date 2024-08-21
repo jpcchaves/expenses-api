@@ -1,4 +1,4 @@
-package com.expenses.app.domain.dto;
+package com.expenses.app.domain.dto.user;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
