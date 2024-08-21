@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            padding: 12px;
+            border: 1px solid #ddd;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        .header {
+            background-color: #4CAF50;
+            color: white;
+            padding: 15px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+<div class="header">
+    <h2>Despesas Próximas do Vencimento</h2>
+</div>
+
+<p>E ai, <span th:text="${name}">User</span>!</p>
+<p>Trago péssimas notícias... Nos próximos dias, você tem as seguintes contas
+    para pagar:</p>
+
+<table>
+    <thead>
+    <tr>
+        <th>Despesa</th>
+        <th>Vencimento</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="expense : ${expenses}">
+        <td th:text="${expense.getExpenseTitle()}">Expense Name</td>
+        <td th:text="${#temporals.format(expense.getDueDate(), 'dd-MM-yyyy')}"></td>
+    </tr>
+    </tbody>
+</table>
+
+<p>Presta atenção nas datas para não pagar juros!!</p>
+
+<p>Abraços,</p>
+<p>Expenses Team</p>
+</body>
+</html>
