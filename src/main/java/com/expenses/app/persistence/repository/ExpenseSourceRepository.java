@@ -21,7 +21,7 @@ public interface ExpenseSourceRepository extends JpaRepository<ExpenseSource, Lo
 
   @Query(
       value =
-          "SELECT * FROM expense_resources es WHERE es.user_id = :userId AND es.id = :expenseSourceId",
+          "SELECT * FROM expense_sources es WHERE es.user_id = :userId AND es.id = :expenseSourceId",
       nativeQuery = true)
   Optional<ExpenseSource> findById(Long userId, Long expenseSourceId);
 }
