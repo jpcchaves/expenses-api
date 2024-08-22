@@ -82,11 +82,45 @@ public class ExpenseSourceServiceImpl implements ExpenseSourceService {
   }
 
   @Override
+  public PaginationResponseDTO<ExpenseSourceResponseDTO> list(Long userId, Pageable pageable) {
+
+    Page<ExpenseSource> expenseSourcePage = expenseSourceRepository.findAll(userId, pageable);
+
+    List<ExpenseSourceResponseDTO> sourceResponseDTOList =
+        expenseSourcePage.getContent().stream()
+            .map(
+                expenseSource ->
+                    new ExpenseSourceResponseDTO(expenseSource.getId(), expenseSource.getName()))
+            .toList();
+
+    return new PaginationResponseDTO<ExpenseSourceResponseDTO>()
+        .builder()
+        .setContent(sourceResponseDTOList)
+        .setPage(expenseSourcePage.getNumber())
+        .setSize(expenseSourcePage.getSize())
+        .setTotalElements(expenseSourcePage.getTotalElements())
+        .setTotalPages(expenseSourcePage.getTotalPages())
+        .setLast(expenseSourcePage.isLast())
+        .build();
+  }
+
+  @Override
   public ExpenseSourceResponseDTO findById(Long expenseSourceId) {
 
     ExpenseSource expenseSource =
         expenseSourceRepository
             .findById(expenseSourceId)
+            .orElseThrow(() -> new ResourceNotFoundException("Não encontrado!"));
+
+    return new ExpenseSourceResponseDTO(expenseSource.getId(), expenseSource.getName());
+  }
+
+  @Override
+  public ExpenseSourceResponseDTO findById(Long userId, Long expenseSourceId) {
+
+    ExpenseSource expenseSource =
+        expenseSourceRepository
+            .findById(userId, expenseSourceId)
             .orElseThrow(() -> new ResourceNotFoundException("Não encontrado!"));
 
     return new ExpenseSourceResponseDTO(expenseSource.getId(), expenseSource.getName());

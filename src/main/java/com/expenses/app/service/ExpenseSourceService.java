@@ -13,5 +13,9 @@ public interface ExpenseSourceService {
 
   PaginationResponseDTO<ExpenseSourceResponseDTO> list(Pageable pageable);
 
+  PaginationResponseDTO<ExpenseSourceResponseDTO> list(Long userId, Pageable pageable);
+
   ExpenseSourceResponseDTO findById(Long expenseSourceId);
+
+  ExpenseSourceResponseDTO findById(Long userId, Long expenseSourceId);
 }
