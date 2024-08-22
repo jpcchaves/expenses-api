@@ -19,6 +19,12 @@ public interface ExpenseRepository extends JpaRepository<Expense, Long> {
 
   @Query(
       value =
+          "SELECT e FROM Expense e WHERE e.dueDate BETWEEN :currentDate AND :weekRange AND e.notificationActive = true ORDER BY e.dueDate ASC")
+  List<Expense> findExpensesInTheWeek(
+      @Param("currentDate") LocalDate currentDate, @Param("weekRange") LocalDate weekRange);
+
+  @Query(
+      value =
           "SELECT e FROM Expense e WHERE e.dueDate BETWEEN :currentDate AND :rangeOfDays AND e.notificationActive = true  ORDER BY e.dueDate ASC")
   List<Expense> findExpensesDueInRangeOfDays(
       @Param("currentDate") LocalDate currentDate, @Param("rangeOfDays") LocalDate rangeOfDays);
