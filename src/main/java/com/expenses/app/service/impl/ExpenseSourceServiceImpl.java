@@ -4,8 +4,11 @@ import com.expenses.app.domain.dto.common.PaginationResponseDTO;
 import com.expenses.app.domain.dto.expense.ExpenseSourceRequestDTO;
 import com.expenses.app.domain.dto.expense.ExpenseSourceResponseDTO;
 import com.expenses.app.domain.models.ExpenseSource;
+import com.expenses.app.domain.models.User;
+import com.expenses.app.exception.BadRequestException;
 import com.expenses.app.exception.ResourceNotFoundException;
 import com.expenses.app.persistence.repository.ExpenseSourceRepository;
+import com.expenses.app.persistence.repository.UserRepository;
 import com.expenses.app.service.ExpenseSourceService;
 import java.util.List;
 import org.springframework.data.domain.Page;
@@ -16,9 +19,12 @@ import org.springframework.stereotype.Service;
 public class ExpenseSourceServiceImpl implements ExpenseSourceService {
 
   private final ExpenseSourceRepository expenseSourceRepository;
+  private final UserRepository userRepository;
 
-  public ExpenseSourceServiceImpl(ExpenseSourceRepository expenseSourceRepository) {
+  public ExpenseSourceServiceImpl(
+      ExpenseSourceRepository expenseSourceRepository, UserRepository userRepository) {
     this.expenseSourceRepository = expenseSourceRepository;
+    this.userRepository = userRepository;
   }
 
   @Override
@@ -34,12 +40,18 @@ public class ExpenseSourceServiceImpl implements ExpenseSourceService {
   @Override
   public ExpenseSourceResponseDTO update(Long expenseSourceId, ExpenseSourceRequestDTO requestDTO) {
 
+    User user =
+        userRepository
+            .findById(requestDTO.getUserId())
+            .orElseThrow(() -> new BadRequestException("Usuário não encontrado!"));
+
     ExpenseSource expenseSource =
         expenseSourceRepository
             .findById(expenseSourceId)
             .orElseThrow(() -> new ResourceNotFoundException("Não encontrado!"));
 
     expenseSource.setName(requestDTO.getName());
+    expenseSource.setUser(user);
 
     expenseSource = expenseSourceRepository.save(expenseSource);
 
