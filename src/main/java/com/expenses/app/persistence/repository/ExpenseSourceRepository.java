@@ -11,15 +11,17 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface ExpenseSourceRepository extends JpaRepository<ExpenseSource, Long> {
 
-  @Query(value = "SELECT * FROM expense_sources es WHERE es.name = :name", nativeQuery = true)
-  Optional<ExpenseSource> findByName(String name);
+  @Query(
+      value = "SELECT * FROM expense_sources es WHERE es.name = :name AND es.user_id = :userId",
+      nativeQuery = true)
+  Optional<ExpenseSource> findByName(Long userId, String name);
 
   @Query(value = "SELECT * FROM expense_sources es WHERE es.user_id = :userId", nativeQuery = true)
   Page<ExpenseSource> findAll(Long userId, Pageable pageable);
 
   @Query(
       value =
-          "SELECT * FROM expense_resources es WHERE es.user_id = :userId AND es.id = :expenseSourceId",
+          "SELECT * FROM expense_sources es WHERE es.user_id = :userId AND es.id = :expenseSourceId",
       nativeQuery = true)
   Optional<ExpenseSource> findById(Long userId, Long expenseSourceId);
 }

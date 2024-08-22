@@ -36,7 +36,7 @@ class ExpenseRepositoryTest extends AbstractTestContainerConfig {
 
     user = userRepository.findByEmail("test@test.com").get();
 
-    expenseSource = expenseSourceRepository.findByName("Fatura do Cartao").get();
+    expenseSource = expenseSourceRepository.findByName(user.getId(), "Fatura do Cartao").get();
 
     List<Expense> mockExpensesList =
         List.of(
