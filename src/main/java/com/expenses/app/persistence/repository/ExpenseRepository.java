@@ -16,4 +16,20 @@ public interface ExpenseRepository extends JpaRepository<Expense, Long> {
           "SELECT e FROM Expense e WHERE e.dueDate BETWEEN :currentDate AND :nextFiveDays AND e.notificationActive = true ORDER BY e.dueDate ASC")
   List<Expense> findExpensesDueInNextFiveDays(
       @Param("currentDate") LocalDate currentDate, @Param("nextFiveDays") LocalDate nextFiveDays);
+
+  @Query(
+      value =
+          "SELECT e FROM Expense e WHERE e.dueDate BETWEEN :currentDate AND :weekRange AND e.notificationActive = true ORDER BY e.dueDate ASC")
+  List<Expense> findExpensesInTheWeek(
+      @Param("currentDate") LocalDate currentDate, @Param("weekRange") LocalDate weekRange);
+
+  @Query(
+      value =
+          "SELECT e FROM Expense e WHERE e.dueDate BETWEEN :currentDate AND :rangeOfDays AND e.notificationActive = true  ORDER BY e.dueDate ASC")
+  List<Expense> findExpensesDueInRangeOfDays(
+      @Param("currentDate") LocalDate currentDate, @Param("rangeOfDays") LocalDate rangeOfDays);
+
+  @Query(
+      "SELECT e FROM Expense e WHERE e.dueDate = :currentDate AND e.notificationActive = true ORDER BY e.dueDate ASC")
+  List<Expense> findExpensesDueSoon(@Param("currentDate") LocalDate currentDate);
 }

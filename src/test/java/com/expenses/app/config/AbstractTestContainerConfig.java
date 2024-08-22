@@ -7,10 +7,12 @@ import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.core.env.ConfigurableEnvironment;
 import org.springframework.core.env.MapPropertySource;
 import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.TestPropertySource;
 import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.lifecycle.Startables;
 
 @ContextConfiguration(initializers = AbstractTestContainerConfig.Initializer.class)
+@TestPropertySource(locations = {"classpath:application-test.yml", "classpath:.env"})
 public abstract class AbstractTestContainerConfig {
 
   public static class Initializer
