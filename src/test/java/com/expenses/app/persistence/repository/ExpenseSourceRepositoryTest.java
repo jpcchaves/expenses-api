@@ -63,7 +63,7 @@ class ExpenseSourceRepositoryTest extends AbstractTestContainerConfig {
 
   @DisplayName("Test given userId and Pageable when find all should return Page of ExpenseSource")
   @Test
-  void testGivenUserIdAndPageableWhenFindAllShouldReturnPageObject() {
+  void testGivenUserIdAndPageable_WhenFindAll_ShouldReturnPageObject() {
 
     // Given
     Pageable pageable = PageRequest.of(0, 20, Sort.by(Sort.Direction.ASC, "created_at"));
@@ -75,5 +75,20 @@ class ExpenseSourceRepositoryTest extends AbstractTestContainerConfig {
     assertNotNull(expenseSourcePage);
 
     assertEquals(2, expenseSourcePage.getContent().size());
+  }
+
+  @DisplayName("")
+  @Test
+  void testGivenUserIdAndExpenseSourceId_WhenFindById_ShouldReturnExpenseSourceObject() {
+
+    // Given /  When
+    ExpenseSource expenseSourceById =
+        expenseSourceRepository.findById(user.getId(), expenseSource.getId()).get();
+
+    // Then
+    assertNotNull(expenseSourceById);
+    assertEquals(expenseSource.getName(), expenseSourceById.getName());
+    assertEquals(expenseSource.getId(), expenseSourceById.getId());
+    assertEquals(user.getId(), expenseSourceById.getUser().getId());
   }
 }
