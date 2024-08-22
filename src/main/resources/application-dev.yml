@@ -16,7 +16,7 @@ spring:
       max-open-prepared-statements: 100
   jpa:
     hibernate:
-      ddl-auto: none
+      ddl-auto: create-drop
     properties:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
@@ -27,6 +27,7 @@ spring:
         '[order_updates]': true
         '[order_inserts]': true
   flyway:
+    enabled: false
     baseline-on-migrate: true
     locations:
       - classpath:db/migration

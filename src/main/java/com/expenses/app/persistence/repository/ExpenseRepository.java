@@ -1,6 +1,5 @@
 package com.expenses.app.persistence.repository;
 
-import com.expenses.app.domain.enums.NotificationFrequency;
 import com.expenses.app.domain.models.Expense;
 import java.time.LocalDate;
 import java.util.List;
@@ -20,9 +19,11 @@ public interface ExpenseRepository extends JpaRepository<Expense, Long> {
 
   @Query(
       value =
-          "SELECT e FROM Expense e WHERE e.dueDate BETWEEN :currentDate AND :rangeOfDays AND e.notificationActive = true AND notificationFrequency = :notificationFrequency ORDER BY e.dueDate ASC")
+          "SELECT e FROM Expense e WHERE e.dueDate BETWEEN :currentDate AND :rangeOfDays AND e.notificationActive = true  ORDER BY e.dueDate ASC")
   List<Expense> findExpensesDueInRangeOfDays(
-      @Param("currentDate") LocalDate currentDate,
-      @Param("rangeOfDays") LocalDate rangeOfDays,
-      @Param("notificationFrequency") NotificationFrequency notificationFrequency);
+      @Param("currentDate") LocalDate currentDate, @Param("rangeOfDays") LocalDate rangeOfDays);
+
+  @Query(
+      "SELECT e FROM Expense e WHERE e.dueDate = :currentDate AND e.notificationActive = true ORDER BY e.dueDate ASC")
+  List<Expense> findExpensesDueSoon(@Param("currentDate") LocalDate currentDate);
 }

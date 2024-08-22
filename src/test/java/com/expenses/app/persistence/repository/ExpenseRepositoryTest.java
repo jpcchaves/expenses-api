@@ -3,7 +3,6 @@ package com.expenses.app.persistence.repository;
 import static org.junit.jupiter.api.Assertions.*;
 
 import com.expenses.app.config.AbstractTestContainerConfig;
-import com.expenses.app.domain.enums.NotificationFrequency;
 import com.expenses.app.domain.models.Expense;
 import com.expenses.app.domain.models.ExpenseSource;
 import com.expenses.app.domain.models.User;
@@ -65,25 +64,5 @@ class ExpenseRepositoryTest extends AbstractTestContainerConfig {
     List<Expense> expenseList = expenseRepository.findExpensesDueInNextFiveDays(now, nextFiveDays);
 
     assertNotNull(expenseList);
-  }
-
-  @Test
-  void findExpensesDueInRangeOfDays() {
-
-    long range = 5;
-
-    LocalDate now = LocalDate.now();
-    LocalDate rangeOfDays = LocalDate.now().plusDays(range);
-
-    List<Expense> expenseList =
-        expenseRepository.findExpensesDueInRangeOfDays(
-            now, rangeOfDays, NotificationFrequency.DAILY);
-
-    assertNotNull(expenseList);
-
-    for (Expense expense : expenseList) {
-
-      assertEquals(NotificationFrequency.DAILY, expense.getNotificationFrequency());
-    }
   }
 }
