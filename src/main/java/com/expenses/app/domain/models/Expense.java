@@ -45,7 +45,7 @@ public class Expense implements Serializable {
   @Column(nullable = false)
   private Boolean notificationActive = Boolean.TRUE;
 
-  @Column(nullable = true)
+  @Column(nullable = false)
   @Enumerated(EnumType.STRING)
   private NotificationFrequency notificationFrequency = NotificationFrequency.DAILY;
 
