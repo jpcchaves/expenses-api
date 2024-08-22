@@ -11,10 +11,17 @@ public class ExpenseSourceRequestDTO implements Serializable {
   @NotBlank(message = "O nome é obrigatório!")
   private String name;
 
+  private Long userId;
+
   public ExpenseSourceRequestDTO() {}
 
   public ExpenseSourceRequestDTO(String name) {
     this.name = name;
+  }
+
+  public ExpenseSourceRequestDTO(String name, Long userId) {
+    this.name = name;
+    this.userId = userId;
   }
 
   public String getName() {
@@ -23,5 +30,13 @@ public class ExpenseSourceRequestDTO implements Serializable {
 
   public void setName(String name) {
     this.name = name;
+  }
+
+  public Long getUserId() {
+    return userId;
+  }
+
+  public void setUserId(Long userId) {
+    this.userId = userId;
   }
 }

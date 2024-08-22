@@ -31,6 +31,13 @@ public class ExpenseSource implements Serializable {
   @Column(unique = true, nullable = false)
   private String name;
 
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(
+      name = "user_id",
+      nullable = false,
+      foreignKey = @ForeignKey(name = "user_fk", value = ConstraintMode.CONSTRAINT))
+  private User user;
+
   @CreationTimestamp private LocalDateTime createdAt;
 
   @UpdateTimestamp private LocalDateTime updatedAt;
@@ -44,6 +51,11 @@ public class ExpenseSource implements Serializable {
   public ExpenseSource(Long id, String name) {
     this.id = id;
     this.name = name;
+  }
+
+  public ExpenseSource(String name, User user) {
+    this.name = name;
+    this.user = user;
   }
 
   public Long getId() {
@@ -60,6 +72,14 @@ public class ExpenseSource implements Serializable {
 
   public void setName(String name) {
     this.name = name;
+  }
+
+  public User getUser() {
+    return user;
+  }
+
+  public void setUser(User user) {
+    this.user = user;
   }
 
   public LocalDateTime getCreatedAt() {

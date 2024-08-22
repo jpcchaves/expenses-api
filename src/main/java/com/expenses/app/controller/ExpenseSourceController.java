@@ -41,10 +41,25 @@ public class ExpenseSourceController {
     return ResponseEntity.ok(expenseSourceService.list(pageable));
   }
 
+  @GetMapping("/{userId}")
+  public ResponseEntity<PaginationResponseDTO<ExpenseSourceResponseDTO>> list(
+      @PathVariable(name = "userId") Long userId, Pageable pageable) {
+
+    return ResponseEntity.ok(expenseSourceService.list(userId, pageable));
+  }
+
   @GetMapping("/{expenseSourceId}")
   public ResponseEntity<ExpenseSourceResponseDTO> findById(
       @PathVariable(name = "expenseSourceId") Long expenseSourceId) {
 
     return ResponseEntity.ok(expenseSourceService.findById(expenseSourceId));
+  }
+
+  @GetMapping("/{userId}/{expenseSourceId}")
+  public ResponseEntity<ExpenseSourceResponseDTO> findById(
+      @PathVariable(name = "userId") Long userId,
+      @PathVariable(name = "expenseSourceId") Long expenseSourceId) {
+
+    return ResponseEntity.ok(expenseSourceService.findById(userId, expenseSourceId));
   }
 }
