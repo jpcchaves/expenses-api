@@ -14,7 +14,7 @@ public interface ExpenseSourceRepository extends JpaRepository<ExpenseSource, Lo
   @Query(value = "SELECT * FROM expense_sources es WHERE es.name = :name", nativeQuery = true)
   Optional<ExpenseSource> findByName(String name);
 
-  @Query(value = "SELECT * FROM expense_sources es WHERE es.user.id = :userId", nativeQuery = true)
+  @Query(value = "SELECT * FROM expense_sources es WHERE es.user_id = :userId", nativeQuery = true)
   Page<ExpenseSource> findAll(Long userId, Pageable pageable);
 
   @Query(
