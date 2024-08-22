@@ -1,44 +1,41 @@
-package com.expenses.app.scheduledjobs;
+package com.expenses.app.service.impl;
 
 import com.expenses.app.domain.models.Expense;
 import com.expenses.app.domain.models.User;
-import com.expenses.app.persistence.repository.ExpenseRepository;
 import com.expenses.app.service.MailService;
+import com.expenses.app.service.NotificationService;
+import com.expenses.app.strategy.notification.NotificationStrategy;
 import com.expenses.app.templates.MailTemplates;
 import java.time.LocalDate;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.scheduling.annotation.Scheduled;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-@Component
-public class NotifyExpenses {
+@Service
+public class NotificationServiceImpl implements NotificationService {
 
-  private static final Logger logger = LoggerFactory.getLogger(NotifyExpenses.class);
-  private final ExpenseRepository expenseRepository;
+  private static final Logger logger = LoggerFactory.getLogger(NotificationServiceImpl.class);
   private final MailService mailService;
   private final MailTemplates mailTemplates;
 
-  public NotifyExpenses(
-      ExpenseRepository expenseRepository, MailService mailService, MailTemplates mailTemplates) {
-    this.expenseRepository = expenseRepository;
+  public NotificationServiceImpl(MailService mailService, MailTemplates mailTemplates) {
     this.mailService = mailService;
     this.mailTemplates = mailTemplates;
   }
 
-  @Scheduled(cron = "0 0 5 * * *", zone = "America/Sao_Paulo")
+  @Override
   @Transactional(readOnly = true)
-  public void sendNotification() throws InterruptedException {
-
-    logger.info("Starting scheduled job to notify expenses");
+  public void sendNotification(NotificationStrategy notificationStrategy)
+      throws InterruptedException {
 
     LocalDate now = LocalDate.now();
-    LocalDate nextFiveDays = LocalDate.now().plusDays(5);
 
-    List<Expense> expensesToNotify =
-        expenseRepository.findExpensesDueInNextFiveDays(now, nextFiveDays);
+    List<Expense> expensesToNotify = notificationStrategy.getExpensesToNotify(now);
 
     if (expensesToNotify.isEmpty()) {
 
@@ -50,6 +47,7 @@ public class NotifyExpenses {
     Map<User, List<Expense>> userExpensesMap = new HashMap<>();
 
     for (Expense expense : expensesToNotify) {
+
       User user = expense.getUser();
 
       userExpensesMap.computeIfAbsent(user, k -> new ArrayList<>()).add(expense);
@@ -66,9 +64,7 @@ public class NotifyExpenses {
           mailTemplates.getNotifyExpenseTemplate(user.getName(), userExpenses),
           user.getEmail());
 
-      Thread.sleep(2000);
+      Thread.sleep(2000); // Throttle emails to avoid spamming
     }
-
-    logger.info("Finished scheduled job to notify expenses");
   }
 }
