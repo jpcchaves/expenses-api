@@ -1,5 +1,6 @@
 package com.expenses.app.domain.models;
 
+import com.expenses.app.domain.enums.NotificationFrequency;
 import jakarta.persistence.*;
 import java.io.Serial;
 import java.io.Serializable;
@@ -44,6 +45,10 @@ public class Expense implements Serializable {
   @Column(nullable = false)
   private Boolean notificationActive = Boolean.TRUE;
 
+  @Column(nullable = true)
+  @Enumerated(EnumType.STRING)
+  private NotificationFrequency notificationFrequency = NotificationFrequency.DAILY;
+
   @CreationTimestamp private LocalDateTime createdAt;
 
   @UpdateTimestamp private LocalDateTime updatedAt;
@@ -85,6 +90,21 @@ public class Expense implements Serializable {
     this.expenseSource = expenseSource;
     this.dueDate = dueDate;
     this.notificationActive = notificationActive;
+  }
+
+  public Expense(
+      String expenseTitle,
+      User user,
+      ExpenseSource expenseSource,
+      LocalDate dueDate,
+      Boolean notificationActive,
+      NotificationFrequency notificationFrequency) {
+    this.expenseTitle = expenseTitle;
+    this.user = user;
+    this.expenseSource = expenseSource;
+    this.dueDate = dueDate;
+    this.notificationActive = notificationActive;
+    this.notificationFrequency = notificationFrequency;
   }
 
   public Long getId() {
@@ -133,6 +153,14 @@ public class Expense implements Serializable {
 
   public void setNotificationActive(Boolean notificationActive) {
     this.notificationActive = notificationActive;
+  }
+
+  public NotificationFrequency getNotificationFrequency() {
+    return notificationFrequency;
+  }
+
+  public void setNotificationFrequency(NotificationFrequency notificationFrequency) {
+    this.notificationFrequency = notificationFrequency;
   }
 
   public LocalDateTime getCreatedAt() {
