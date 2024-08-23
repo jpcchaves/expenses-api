@@ -32,4 +32,10 @@ public interface ExpenseRepository extends JpaRepository<Expense, Long> {
       value =
           "SELECT e FROM Expense e WHERE e.expenseFrequency = :expenseFrequency AND e.notificationActive = true")
   List<Expense> findExpensesByFrequency(ExpenseFrequency expenseFrequency);
+
+  @Query(
+      value =
+          "SELECT e FROM Expense e WHERE e.expenseFrequency = :expenseFrequency AND e.notificationActive = true AND e.dueDate BETWEEN :startDate AND :endDate")
+  List<Expense> findExpensesByFrequencyFromPastMonth(
+      LocalDate startDate, LocalDate endDate, ExpenseFrequency expenseFrequency);
 }
