@@ -27,6 +27,8 @@ public class ExpensesGenerate {
   @Scheduled(cron = "0 0 0 1 * *", zone = "America/Sao_Paulo")
   private void generateMonthlyExpenses() {
 
+    logger.info("Started generation of updated monthly expenses...");
+
     List<Expense> montlyExpensesList =
         expenseRepository.findExpensesByFrequency(ExpenseFrequency.MONTHLY);
 
@@ -52,5 +54,7 @@ public class ExpensesGenerate {
     }
 
     expenseRepository.saveAll(updatedMonthlyExpenses);
+
+    logger.info("Finished generation of updated monthly expenses...");
   }
 }
