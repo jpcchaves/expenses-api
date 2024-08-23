@@ -3,11 +3,16 @@ package com.expenses.app.persistence.repository;
 import static org.junit.jupiter.api.Assertions.*;
 
 import com.expenses.app.config.AbstractTestContainerConfig;
+import com.expenses.app.domain.enums.ExpenseFrequency;
 import com.expenses.app.domain.models.Expense;
 import com.expenses.app.domain.models.ExpenseSource;
+import com.expenses.app.domain.models.Role;
 import com.expenses.app.domain.models.User;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import net.datafaker.Faker;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -25,6 +30,8 @@ class ExpenseRepositoryTest extends AbstractTestContainerConfig {
 
   @Autowired private ExpenseSourceRepository expenseSourceRepository;
 
+  @Autowired private RoleRepository roleRepository;
+
   private Faker faker;
 
   private User user;
@@ -34,14 +41,25 @@ class ExpenseRepositoryTest extends AbstractTestContainerConfig {
   void setupEach() {
     faker = new Faker();
 
-    user = userRepository.findByEmail("test@test.com").get();
+    Role role = roleRepository.saveAndFlush(new Role("TEST_ROLE"));
 
-    expenseSource = expenseSourceRepository.findByName(user.getId(), "Fatura do Cartao").get();
+    user = userRepository.saveAndFlush(new User("Test", "test@test.com", "123456", Set.of(role)));
 
-    List<Expense> mockExpensesList =
+    expenseSource =
+        expenseSourceRepository.saveAndFlush(new ExpenseSource("Fatura do Cartao", user));
+
+    List<Expense> yearlyExpenses =
         List.of(
             new Expense(
-                faker.lorem().characters(20), user, expenseSource, LocalDate.now().plusDays(1)),
+                faker.lorem().characters(20),
+                user,
+                expenseSource,
+                LocalDate.now().plusDays(1),
+                Boolean.TRUE,
+                ExpenseFrequency.YEARLY));
+
+    List<Expense> monthlyExpenses =
+        List.of(
             new Expense(
                 faker.lorem().characters(20), user, expenseSource, LocalDate.now().plusDays(2)),
             new Expense(
@@ -52,6 +70,10 @@ class ExpenseRepositoryTest extends AbstractTestContainerConfig {
                 faker.lorem().characters(20), user, expenseSource, LocalDate.now().plusDays(5)),
             new Expense(
                 faker.lorem().characters(20), user, expenseSource, LocalDate.now().plusDays(6)));
+
+    List<Expense> mockExpensesList =
+        Stream.concat(yearlyExpenses.stream(), monthlyExpenses.stream())
+            .collect(Collectors.toList());
 
     expenseRepository.saveAll(mockExpensesList);
   }
@@ -64,5 +86,15 @@ class ExpenseRepositoryTest extends AbstractTestContainerConfig {
     List<Expense> expenseList = expenseRepository.findExpensesDueInNextFiveDays(now, nextFiveDays);
 
     assertNotNull(expenseList);
+  }
+
+  @Test
+  void findMonthlyExpenses() {
+
+    List<Expense> monthlyExpenses =
+        expenseRepository.findExpensesByFrequency(ExpenseFrequency.MONTHLY);
+
+    assertNotNull(monthlyExpenses);
+    assertEquals(5, monthlyExpenses.size());
   }
 }
