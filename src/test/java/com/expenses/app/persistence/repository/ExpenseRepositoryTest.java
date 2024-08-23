@@ -9,6 +9,7 @@ import com.expenses.app.domain.models.ExpenseSource;
 import com.expenses.app.domain.models.Role;
 import com.expenses.app.domain.models.User;
 import java.time.LocalDate;
+import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -71,8 +72,22 @@ class ExpenseRepositoryTest extends AbstractTestContainerConfig {
             new Expense(
                 faker.lorem().characters(20), user, expenseSource, LocalDate.now().plusDays(6)));
 
+    List<Expense> previousMonthMonthlyExpenses =
+        List.of(
+            new Expense(
+                faker.lorem().characters(20), user, expenseSource, LocalDate.now().minusMonths(1)),
+            new Expense(
+                faker.lorem().characters(20), user, expenseSource, LocalDate.now().minusMonths(1)),
+            new Expense(
+                faker.lorem().characters(20), user, expenseSource, LocalDate.now().minusMonths(1)),
+            new Expense(
+                faker.lorem().characters(20), user, expenseSource, LocalDate.now().minusMonths(1)),
+            new Expense(
+                faker.lorem().characters(20), user, expenseSource, LocalDate.now().minusMonths(1)));
+
     List<Expense> mockExpensesList =
-        Stream.concat(yearlyExpenses.stream(), monthlyExpenses.stream())
+        Stream.of(yearlyExpenses, monthlyExpenses, previousMonthMonthlyExpenses)
+            .flatMap(Collection::stream)
             .collect(Collectors.toList());
 
     expenseRepository.saveAll(mockExpensesList);
@@ -95,6 +110,22 @@ class ExpenseRepositoryTest extends AbstractTestContainerConfig {
         expenseRepository.findExpensesByFrequency(ExpenseFrequency.MONTHLY);
 
     assertNotNull(monthlyExpenses);
-    assertEquals(5, monthlyExpenses.size());
+    assertEquals(10, monthlyExpenses.size());
+  }
+
+  @Test
+  void findMonthlyExpensesFromPreviousMonth() {
+
+    LocalDate now = LocalDate.now();
+
+    LocalDate startDate = now.minusMonths(1).withDayOfMonth(1);
+    LocalDate endDate = now.minusMonths(1).withDayOfMonth(now.minusMonths(1).lengthOfMonth());
+
+    List<Expense> previousMonthExpenses =
+        expenseRepository.findExpensesByFrequencyFromPastMonth(
+            startDate, endDate, ExpenseFrequency.MONTHLY);
+
+    assertNotNull(previousMonthExpenses);
+    assertEquals(5, previousMonthExpenses.size());
   }
 }
