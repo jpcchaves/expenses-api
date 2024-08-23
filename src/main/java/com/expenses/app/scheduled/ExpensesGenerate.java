@@ -29,8 +29,14 @@ public class ExpensesGenerate {
 
     logger.info("Started generation of updated monthly expenses...");
 
+    LocalDate now = LocalDate.now();
+
+    LocalDate startDate = now.minusMonths(1).withDayOfMonth(1);
+    LocalDate endDate = now.minusMonths(1).withDayOfMonth(startDate.lengthOfMonth());
+
     List<Expense> montlyExpensesList =
-        expenseRepository.findExpensesByFrequency(ExpenseFrequency.MONTHLY);
+        expenseRepository.findExpensesByFrequencyFromPastMonth(
+            startDate, endDate, ExpenseFrequency.MONTHLY);
 
     if (montlyExpensesList.isEmpty()) {
 
