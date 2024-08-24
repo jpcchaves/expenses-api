@@ -1,5 +1,6 @@
 package com.expenses.app.domain.dto.expense;
 
+import com.expenses.app.domain.enums.ExpenseFrequency;
 import jakarta.validation.constraints.*;
 import java.time.LocalDate;
 
@@ -19,6 +20,8 @@ public class ExpenseRequestDTO {
   @FutureOrPresent(message = "A data precisa ser hoje ou futura!")
   private LocalDate dueDate;
 
+  private ExpenseFrequency expenseFrequency;
+
   public ExpenseRequestDTO() {}
 
   public ExpenseRequestDTO(
@@ -27,6 +30,19 @@ public class ExpenseRequestDTO {
     this.userId = userId;
     this.expenseSourceId = expenseSourceId;
     this.dueDate = dueDate;
+  }
+
+  public ExpenseRequestDTO(
+      String expenseTitle,
+      Long userId,
+      Long expenseSourceId,
+      LocalDate dueDate,
+      ExpenseFrequency expenseFrequency) {
+    this.expenseTitle = expenseTitle;
+    this.userId = userId;
+    this.expenseSourceId = expenseSourceId;
+    this.dueDate = dueDate;
+    this.expenseFrequency = expenseFrequency;
   }
 
   public String getExpenseTitle() {
@@ -59,5 +75,13 @@ public class ExpenseRequestDTO {
 
   public void setDueDate(LocalDate dueDate) {
     this.dueDate = dueDate;
+  }
+
+  public ExpenseFrequency getExpenseFrequency() {
+    return expenseFrequency;
+  }
+
+  public void setExpenseFrequency(ExpenseFrequency expenseFrequency) {
+    this.expenseFrequency = expenseFrequency;
   }
 }
