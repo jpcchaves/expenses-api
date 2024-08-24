@@ -15,10 +15,7 @@ services:
       - expenses-app-network
   expenses:
     container_name: expenses
-    image: expenses
-    restart: always
-    build:
-      dockerfile: Dockerfile
+    image: expenses-api
     env_file:
       - .env
     environment:
@@ -28,9 +25,9 @@ services:
       DB_PASSWORD: "${DB_PASSWORD}"
     ports:
       - "8888:8080"
-    command: ./gradlew bootRun
     depends_on:
       - database
+    restart: always
     networks:
       - expenses-app-network
 
