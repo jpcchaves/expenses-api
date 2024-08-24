@@ -112,6 +112,19 @@ public class Expense implements Serializable {
     this.expenseFrequency = expenseFrequency;
   }
 
+  public Expense(
+      String expenseTitle,
+      User user,
+      ExpenseSource expenseSource,
+      LocalDate dueDate,
+      ExpenseFrequency expenseFrequency) {
+    this.expenseTitle = expenseTitle;
+    this.user = user;
+    this.expenseSource = expenseSource;
+    this.dueDate = dueDate;
+    this.expenseFrequency = expenseFrequency;
+  }
+
   public Long getId() {
     return id;
   }
