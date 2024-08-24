@@ -46,9 +46,14 @@ public class ExpenseServiceImpl implements ExpenseService {
             .orElseThrow(() -> new ResourceNotFoundException("Fonte de custo não encontrado!"));
 
     Expense expense =
-        new Expense(requestDTO.getExpenseTitle(), user, expenseSource, requestDTO.getDueDate());
+        new Expense(
+            requestDTO.getExpenseTitle(),
+            user,
+            expenseSource,
+            requestDTO.getDueDate(),
+            requestDTO.getExpenseFrequency());
 
-    expense = expenseRepository.saveAndFlush(expense);
+    expense = expenseRepository.save(expense);
 
     return new ExpenseResponseDTO(expense.getId(), expense.getExpenseTitle(), expense.getDueDate());
   }
@@ -75,8 +80,9 @@ public class ExpenseServiceImpl implements ExpenseService {
     expense.setUser(user);
     expense.setExpenseSource(expenseSource);
     expense.setDueDate(requestDTO.getDueDate());
+    expense.setExpenseFrequency(requestDTO.getExpenseFrequency());
 
-    expense = expenseRepository.saveAndFlush(expense);
+    expense = expenseRepository.save(expense);
 
     return new ExpenseResponseDTO(expense.getId(), expense.getExpenseTitle(), expense.getDueDate());
   }
