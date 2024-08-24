@@ -7,6 +7,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -38,6 +39,23 @@ public class ExceptionControllerAdvice extends ResponseEntityExceptionHandler {
             .build();
 
     return new ResponseEntity<>(exceptionResponse, HttpStatus.INTERNAL_SERVER_ERROR);
+  }
+
+  @Override
+  protected ResponseEntity<Object> handleHttpMessageNotReadable(
+      HttpMessageNotReadableException ex,
+      HttpHeaders headers,
+      HttpStatusCode status,
+      WebRequest request) {
+
+    ExceptionResponseDTO exceptionResponse =
+        ExceptionResponseDTO.builder()
+            .setMessage(
+                "An error occurred processing your request. Tip: Verify the request body data and try again!")
+            .setDetails(request.getDescription(false))
+            .build();
+
+    return new ResponseEntity<>(exceptionResponse, HttpStatus.BAD_REQUEST);
   }
 
   @ExceptionHandler(BadRequestException.class)
