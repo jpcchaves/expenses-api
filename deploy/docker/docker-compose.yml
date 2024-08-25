@@ -23,6 +23,8 @@ services:
       DB_URL: "${DB_URL}"
       DB_USER: "${DB_USER}"
       DB_PASSWORD: "${DB_PASSWORD}"
+      JWT_DEV_SECRET: "${JWT_DEV_SECRET}"
+      JWT_DEV_EXPIRATION: "${JWT_DEV_EXPIRATION}"
     ports:
       - "8888:8080"
     depends_on:

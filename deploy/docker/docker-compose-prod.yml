@@ -23,6 +23,8 @@ services:
       DB_URL: "${DB_URL}"
       DB_USER: "${DB_USER}"
       DB_PASSWORD: "${DB_PASSWORD}"
+      JWT_DEV_SECRET: "${JWT_DEV_SECRET}"
+      JWT_DEV_EXPIRATION: "${JWT_DEV_EXPIRATION}"
       SERVER_PORT: 3000
       SPRING_PROFILES_ACTIVE: prod
     ports:
