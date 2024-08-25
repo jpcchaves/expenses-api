@@ -15,7 +15,7 @@ services:
       - expenses-app-network
   expenses:
     container_name: expenses
-    image: jpcchaves/expenses-api:latest
+    image: jpcchaves/expenses-api:a
     env_file:
       - ../../.env
     environment:

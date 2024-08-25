@@ -9,7 +9,7 @@ build/
 providers
 .terraform.lock.hcl
 terraform.tfstate
-terraform.tfstate.bakcup
+terraform.tfstate.backup
 
 .env
 

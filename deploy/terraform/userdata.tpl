@@ -26,8 +26,8 @@
     cd ~/project
 
 #clone your project from git repository
-    git clone https://github.com/jpcchaves/url-shortener.git
-    cd url-shortener
+    git clone https://github.com/jpcchaves/expenses-api.git
+    cd expenses-api
     git checkout main
     git pull
     cd deploy/docker
