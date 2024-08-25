@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import java.io.Serial;
 import java.io.Serializable;
 import java.util.Objects;
+import org.springframework.security.core.GrantedAuthority;
 
 @Entity
 @Table(
@@ -14,7 +15,7 @@ import java.util.Objects;
           columnNames = {"name"})
     })
 @SequenceGenerator(name = "seq_role", sequenceName = "seq_role", allocationSize = 1)
-public class Role implements Serializable {
+public class Role implements Serializable, GrantedAuthority {
 
   @Serial private static final long serialVersionUID = -283943394835529005L;
 
@@ -68,5 +69,10 @@ public class Role implements Serializable {
   @Override
   public String toString() {
     return "Role{" + "id=" + id + ", name='" + name + '\'' + '}';
+  }
+
+  @Override
+  public String getAuthority() {
+    return name;
   }
 }
