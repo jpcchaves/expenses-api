@@ -7,12 +7,6 @@ plugins {
 group = 'com.expenses'
 version = '0.0.1-SNAPSHOT'
 
-java {
-    toolchain {
-        languageVersion = JavaLanguageVersion.of(17)
-    }
-}
-
 repositories {
     mavenCentral()
 }
@@ -39,11 +33,10 @@ dependencies {
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 }
 
-bootJar {
-    enabled = true
-    archiveFileName = "app.jar"
-}
-
 tasks.named('test') {
     useJUnitPlatform()
+}
+
+bootBuildImage {
+    imageName = "expenses-api"
 }

@@ -1,6 +1,8 @@
 package com.expenses.app.domain.enums;
 
-public enum ExpenseFrequency {
+import java.io.Serializable;
+
+public enum ExpenseFrequency implements Serializable {
   MONTHLY,
   YEARLY
 }

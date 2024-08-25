@@ -3,7 +3,7 @@ services:
     container_name: expenses_db
     image: postgres:15
     env_file:
-      - .env
+      - ../../.env
     environment:
       TZ: "America/Sao_Paulo"
       POSTGRES_USER: "${DB_USER}"
@@ -15,24 +15,29 @@ services:
       - expenses-app-network
   expenses:
     container_name: expenses
-    image: expenses
-    restart: always
-    build:
-      dockerfile: Dockerfile
+    image: jpcchaves/expenses-api:latest
     env_file:
-      - .env
+      - ../../.env
     environment:
       TZ: "America/Sao_Paulo"
       DB_URL: "${DB_URL}"
       DB_USER: "${DB_USER}"
       DB_PASSWORD: "${DB_PASSWORD}"
+      SERVER_PORT: 3000
+      SPRING_PROFILES_ACTIVE: prod
     ports:
-      - "8888:8080"
-    command: ./gradlew bootRun
+      - "80:3000"
     depends_on:
       - database
+    restart: always
     networks:
       - expenses-app-network
+    deploy:
+      resources:
+        limits:
+          memory: 700M
+        reservations:
+          memory: 700M
 
 networks:
   expenses-app-network:

@@ -11,7 +11,12 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 @Entity
-@Table(name = "expenses")
+@Table(
+    name = "expenses",
+    indexes = {
+      @Index(name = "due_date_idx", columnList = "dueDate"),
+      @Index(name = "user_id_idx", columnList = "user_id"),
+    })
 @SequenceGenerator(name = "seq_expense", sequenceName = "seq_expense", allocationSize = 1)
 public class Expense implements Serializable {
 
@@ -104,6 +109,19 @@ public class Expense implements Serializable {
     this.expenseSource = expenseSource;
     this.dueDate = dueDate;
     this.notificationActive = notificationActive;
+    this.expenseFrequency = expenseFrequency;
+  }
+
+  public Expense(
+      String expenseTitle,
+      User user,
+      ExpenseSource expenseSource,
+      LocalDate dueDate,
+      ExpenseFrequency expenseFrequency) {
+    this.expenseTitle = expenseTitle;
+    this.user = user;
+    this.expenseSource = expenseSource;
+    this.dueDate = dueDate;
     this.expenseFrequency = expenseFrequency;
   }
 
