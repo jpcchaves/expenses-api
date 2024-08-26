@@ -7,13 +7,13 @@ import com.expenses.app.domain.models.ExpenseSource;
 import com.expenses.app.domain.models.User;
 import com.expenses.app.exception.BadRequestException;
 import com.expenses.app.exception.ResourceNotFoundException;
+import com.expenses.app.helpers.AuthHelper;
 import com.expenses.app.persistence.repository.ExpenseSourceRepository;
 import com.expenses.app.persistence.repository.UserRepository;
 import com.expenses.app.service.ExpenseSourceService;
 import java.util.List;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -21,22 +21,23 @@ public class ExpenseSourceServiceImpl implements ExpenseSourceService {
 
   private final ExpenseSourceRepository expenseSourceRepository;
   private final UserRepository userRepository;
+  private final AuthHelper authHelper;
 
   public ExpenseSourceServiceImpl(
-      ExpenseSourceRepository expenseSourceRepository, UserRepository userRepository) {
+      ExpenseSourceRepository expenseSourceRepository,
+      UserRepository userRepository,
+      AuthHelper authHelper) {
     this.expenseSourceRepository = expenseSourceRepository;
     this.userRepository = userRepository;
+    this.authHelper = authHelper;
   }
 
   @Override
   public ExpenseSourceResponseDTO create(ExpenseSourceRequestDTO requestDTO) {
 
-    User securityContextUser =
-        (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-
     User user =
         userRepository
-            .findById(securityContextUser.getId())
+            .findById(authHelper.getUserDetails().getId())
             .orElseThrow(() -> new BadRequestException("Usuário não encontrado!"));
 
     ExpenseSource expenseSource = new ExpenseSource(requestDTO.getName(), user);
@@ -49,12 +50,9 @@ public class ExpenseSourceServiceImpl implements ExpenseSourceService {
   @Override
   public ExpenseSourceResponseDTO update(Long expenseSourceId, ExpenseSourceRequestDTO requestDTO) {
 
-    User securityContextUser =
-        (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-
     User user =
         userRepository
-            .findById(securityContextUser.getId())
+            .findById(authHelper.getUserDetails().getId())
             .orElseThrow(() -> new BadRequestException("Usuário não encontrado!"));
 
     ExpenseSource expenseSource =
