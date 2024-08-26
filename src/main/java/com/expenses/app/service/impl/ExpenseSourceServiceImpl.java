@@ -13,6 +13,7 @@ import com.expenses.app.service.ExpenseSourceService;
 import java.util.List;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -30,7 +31,15 @@ public class ExpenseSourceServiceImpl implements ExpenseSourceService {
   @Override
   public ExpenseSourceResponseDTO create(ExpenseSourceRequestDTO requestDTO) {
 
-    ExpenseSource expenseSource = new ExpenseSource(requestDTO.getName());
+    User securityContextUser =
+        (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+    User user =
+        userRepository
+            .findById(securityContextUser.getId())
+            .orElseThrow(() -> new BadRequestException("Usuário não encontrado!"));
+
+    ExpenseSource expenseSource = new ExpenseSource(requestDTO.getName(), user);
 
     expenseSource = expenseSourceRepository.save(expenseSource);
 
@@ -40,9 +49,12 @@ public class ExpenseSourceServiceImpl implements ExpenseSourceService {
   @Override
   public ExpenseSourceResponseDTO update(Long expenseSourceId, ExpenseSourceRequestDTO requestDTO) {
 
+    User securityContextUser =
+        (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
     User user =
         userRepository
-            .findById(requestDTO.getUserId())
+            .findById(securityContextUser.getId())
             .orElseThrow(() -> new BadRequestException("Usuário não encontrado!"));
 
     ExpenseSource expenseSource =
