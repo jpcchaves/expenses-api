@@ -1,5 +1,6 @@
 package com.expenses.app.controller.impl;
 
+import com.expenses.app.controller.ExpenseSourceController;
 import com.expenses.app.domain.dto.common.PaginationResponseDTO;
 import com.expenses.app.domain.dto.expense.ExpenseSourceRequestDTO;
 import com.expenses.app.domain.dto.expense.ExpenseSourceResponseDTO;
@@ -12,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/v1/expense-sources")
-public class ExpenseSourceControllerImpl {
+public class ExpenseSourceControllerImpl implements ExpenseSourceController {
 
   private final ExpenseSourceService expenseSourceService;
 
@@ -20,6 +21,7 @@ public class ExpenseSourceControllerImpl {
     this.expenseSourceService = expenseSourceService;
   }
 
+  @Override
   @PostMapping
   public ResponseEntity<ExpenseSourceResponseDTO> create(
       @Valid @RequestBody ExpenseSourceRequestDTO requestDTO) {
@@ -27,6 +29,7 @@ public class ExpenseSourceControllerImpl {
     return ResponseEntity.status(HttpStatus.CREATED).body(expenseSourceService.create(requestDTO));
   }
 
+  @Override
   @PutMapping("/{expenseSourceId}")
   public ResponseEntity<ExpenseSourceResponseDTO> update(
       @PathVariable(name = "expenseSourceId") Long expenseSourceId,
@@ -35,12 +38,14 @@ public class ExpenseSourceControllerImpl {
     return ResponseEntity.ok(expenseSourceService.update(expenseSourceId, requestDTO));
   }
 
+  @Override
   @GetMapping
   public ResponseEntity<PaginationResponseDTO<ExpenseSourceResponseDTO>> list(Pageable pageable) {
 
     return ResponseEntity.ok(expenseSourceService.list(pageable));
   }
 
+  @Override
   @GetMapping("/{expenseSourceId}")
   public ResponseEntity<ExpenseSourceResponseDTO> findById(
       @PathVariable(name = "expenseSourceId") Long expenseSourceId) {
