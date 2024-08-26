@@ -94,7 +94,8 @@ public class ExpenseServiceImpl implements ExpenseService {
   @Override
   public PaginationResponseDTO<ExpenseResponseDTO> list(Pageable pageable) {
 
-    Page<Expense> expensesPage = expenseRepository.findAll(pageable);
+    Page<Expense> expensesPage =
+        expenseRepository.findAll(pageable, authHelper.getUserDetails().getId());
 
     List<ExpenseResponseDTO> expenseResponseDTOList =
         expensesPage.getContent().stream()
