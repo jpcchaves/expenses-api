@@ -9,10 +9,6 @@ public class ExpenseRequestDTO {
   @NotBlank(message = "O título é obrigatório!")
   private String expenseTitle;
 
-  @NotNull(message = "O usuario não pode ser nulo!")
-  @Min(value = 1, message = "O usuario não pode ser nulo!")
-  private Long userId;
-
   @NotNull(message = "A fonte da despesa não pode ser nula!")
   @Min(value = 1, message = "A fonte da despesa não pode ser nula!")
   private Long expenseSourceId;
@@ -24,22 +20,18 @@ public class ExpenseRequestDTO {
 
   public ExpenseRequestDTO() {}
 
-  public ExpenseRequestDTO(
-      String expenseTitle, Long userId, Long expenseSourceId, LocalDate dueDate) {
+  public ExpenseRequestDTO(String expenseTitle, Long expenseSourceId, LocalDate dueDate) {
     this.expenseTitle = expenseTitle;
-    this.userId = userId;
     this.expenseSourceId = expenseSourceId;
     this.dueDate = dueDate;
   }
 
   public ExpenseRequestDTO(
       String expenseTitle,
-      Long userId,
       Long expenseSourceId,
       LocalDate dueDate,
       ExpenseFrequency expenseFrequency) {
     this.expenseTitle = expenseTitle;
-    this.userId = userId;
     this.expenseSourceId = expenseSourceId;
     this.dueDate = dueDate;
     this.expenseFrequency = expenseFrequency;
@@ -51,14 +43,6 @@ public class ExpenseRequestDTO {
 
   public void setExpenseTitle(String expenseTitle) {
     this.expenseTitle = expenseTitle;
-  }
-
-  public Long getUserId() {
-    return userId;
-  }
-
-  public void setUserId(Long userId) {
-    this.userId = userId;
   }
 
   public Long getExpenseSourceId() {
