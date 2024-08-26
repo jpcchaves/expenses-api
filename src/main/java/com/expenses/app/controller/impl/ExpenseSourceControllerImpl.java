@@ -1,4 +1,4 @@
-package com.expenses.app.controller;
+package com.expenses.app.controller.impl;
 
 import com.expenses.app.domain.dto.common.PaginationResponseDTO;
 import com.expenses.app.domain.dto.expense.ExpenseSourceRequestDTO;
@@ -12,11 +12,11 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/v1/expense-sources")
-public class ExpenseSourceController {
+public class ExpenseSourceControllerImpl {
 
   private final ExpenseSourceService expenseSourceService;
 
-  public ExpenseSourceController(ExpenseSourceService expenseSourceService) {
+  public ExpenseSourceControllerImpl(ExpenseSourceService expenseSourceService) {
     this.expenseSourceService = expenseSourceService;
   }
 

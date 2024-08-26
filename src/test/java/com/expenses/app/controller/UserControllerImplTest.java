@@ -25,7 +25,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
-class UserControllerTest extends AbstractTestContainerConfig {
+class UserControllerImplTest extends AbstractTestContainerConfig {
 
   private static final ObjectMapper mapper = new ObjectMapper();
   private static Faker faker;

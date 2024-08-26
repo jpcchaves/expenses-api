@@ -1,6 +1,5 @@
-package com.expenses.app.controller;
+package com.expenses.app.controller.impl;
 
-import com.expenses.app.domain.dto.common.PaginationResponseDTO;
 import com.expenses.app.domain.dto.user.UserRequestDTO;
 import com.expenses.app.domain.dto.user.UserResponseDTO;
 import com.expenses.app.service.UserService;
@@ -11,11 +10,11 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/v1/users")
-public class UserController {
+public class UserControllerImpl {
 
   private final UserService userService;
 
-  public UserController(UserService userService) {
+  public UserControllerImpl(UserService userService) {
     this.userService = userService;
   }
 
