@@ -6,11 +6,14 @@ import com.expenses.app.domain.enums.RoleType;
 import com.expenses.app.domain.models.Role;
 import com.expenses.app.domain.models.User;
 import com.expenses.app.exception.BadRequestException;
+import com.expenses.app.exception.ResourceNotFoundException;
 import com.expenses.app.persistence.repository.RoleRepository;
 import com.expenses.app.persistence.repository.UserRepository;
 import com.expenses.app.service.UserService;
 import java.util.Objects;
 import java.util.Set;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -79,5 +82,19 @@ public class UserServiceImpl implements UserService {
     user = userRepository.saveAndFlush(user);
 
     return new UserResponseDTO(user.getId(), user.getName(), user.getEmail());
+  }
+
+  @Override
+  public User getUserByEmail(String emamil) {
+    return userRepository
+        .findByEmail(emamil)
+        .orElseThrow(
+            () -> new ResourceNotFoundException("Usuário não encontrado com o email informado!"));
+  }
+
+  // Username refers to email
+  @Override
+  public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+    return getUserByEmail(email);
   }
 }
