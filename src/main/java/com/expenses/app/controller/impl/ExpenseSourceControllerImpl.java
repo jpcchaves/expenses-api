@@ -37,16 +37,14 @@ public class ExpenseSourceControllerImpl {
 
   @GetMapping
   public ResponseEntity<PaginationResponseDTO<ExpenseSourceResponseDTO>> list(Pageable pageable) {
-    Long mockedUserId = 1L;
 
-    return ResponseEntity.ok(expenseSourceService.list(mockedUserId, pageable));
+    return ResponseEntity.ok(expenseSourceService.list(pageable));
   }
 
   @GetMapping("/{expenseSourceId}")
   public ResponseEntity<ExpenseSourceResponseDTO> findById(
       @PathVariable(name = "expenseSourceId") Long expenseSourceId) {
-    Long mockedUserId = 1L;
 
-    return ResponseEntity.ok(expenseSourceService.findById(mockedUserId, expenseSourceId));
+    return ResponseEntity.ok(expenseSourceService.findById(expenseSourceId));
   }
 }
