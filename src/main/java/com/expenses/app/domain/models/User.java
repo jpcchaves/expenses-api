@@ -4,18 +4,18 @@ import jakarta.persistence.*;
 import java.io.Serial;
 import java.io.Serializable;
 import java.time.LocalDateTime;
-import java.util.HashSet;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 @Entity
 @Table(
     name = "users",
     uniqueConstraints = {@UniqueConstraint(name = "unique_email", columnNames = "email")})
 @SequenceGenerator(name = "seq_user", sequenceName = "seq_user", allocationSize = 1)
-public class User implements Serializable {
+public class User implements Serializable, UserDetails {
 
   @Serial private static final long serialVersionUID = 4272589753813163768L;
 
@@ -107,12 +107,43 @@ public class User implements Serializable {
     this.email = email;
   }
 
+  @Override
+  public Collection<? extends GrantedAuthority> getAuthorities() {
+    return this.roles;
+  }
+
+  @Override
   public String getPassword() {
     return password;
   }
 
   public void setPassword(String password) {
     this.password = password;
+  }
+
+  @Override
+  public String getUsername() {
+    return this.name;
+  }
+
+  @Override
+  public boolean isAccountNonExpired() {
+    return true;
+  }
+
+  @Override
+  public boolean isAccountNonLocked() {
+    return true;
+  }
+
+  @Override
+  public boolean isCredentialsNonExpired() {
+    return true;
+  }
+
+  @Override
+  public boolean isEnabled() {
+    return true;
   }
 
   public Set<Role> getRoles() {

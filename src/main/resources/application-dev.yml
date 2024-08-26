@@ -53,3 +53,6 @@ spring:
   web:
     locale-resolver: fixed
     locale: pt_BR
+app:
+  jwt-secret: ${JWT_SECRET}
+  jwt-expiration-millisecond: ${JWT_EXPIRATION}
