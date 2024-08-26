@@ -3,50 +3,74 @@ package com.expenses.app.controller;
 import com.expenses.app.domain.dto.common.PaginationResponseDTO;
 import com.expenses.app.domain.dto.expense.ExpenseSourceRequestDTO;
 import com.expenses.app.domain.dto.expense.ExpenseSourceResponseDTO;
-import com.expenses.app.service.ExpenseSourceService;
-import jakarta.validation.Valid;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PathVariable;
 
-@RestController
-@RequestMapping("/api/v1/expense-sources")
-public class ExpenseSourceController {
+@Tag(name = "Expense Source Controller")
+public interface ExpenseSourceController {
 
-  private final ExpenseSourceService expenseSourceService;
+  @Operation(
+      summary = "Creates a new expense source",
+      description =
+          "Creates a new expense source by passing a JSON representation of ExpenseRequestDTO",
+      responses = {
+        @ApiResponse(
+            description = "Created",
+            responseCode = "201",
+            content = @Content(schema = @Schema(implementation = ExpenseSourceResponseDTO.class))),
+        @ApiResponse(description = "Bad Request", responseCode = "400", content = @Content),
+        @ApiResponse(description = "Unauthorized", responseCode = "401", content = @Content),
+        @ApiResponse(description = "Internal Error", responseCode = "500", content = @Content),
+      })
+  ResponseEntity<ExpenseSourceResponseDTO> create(ExpenseSourceRequestDTO requestDTO);
 
-  public ExpenseSourceController(ExpenseSourceService expenseSourceService) {
-    this.expenseSourceService = expenseSourceService;
-  }
+  @Operation(
+      summary = "Updates a expense source",
+      description =
+          "Updates a expense source by passing a expense ID and  a JSON representation of ExpenseSourceRequestDTO",
+      responses = {
+        @ApiResponse(
+            description = "Success",
+            responseCode = "200",
+            content = @Content(schema = @Schema(implementation = ExpenseSourceResponseDTO.class))),
+        @ApiResponse(description = "Bad Request", responseCode = "400", content = @Content),
+        @ApiResponse(description = "Unauthorized", responseCode = "401", content = @Content),
+        @ApiResponse(description = "Internal Error", responseCode = "500", content = @Content),
+      })
+  ResponseEntity<ExpenseSourceResponseDTO> update(
+      Long expenseSourceId, ExpenseSourceRequestDTO requestDTO);
 
-  @PostMapping
-  public ResponseEntity<ExpenseSourceResponseDTO> create(
-      @Valid @RequestBody ExpenseSourceRequestDTO requestDTO) {
+  @Operation(
+      summary = "Gets expense sources list related to user",
+      description = "Gets expense sources list related to user",
+      responses = {
+        @ApiResponse(
+            description = "Success",
+            responseCode = "200",
+            content = @Content(schema = @Schema(implementation = PaginationResponseDTO.class))),
+        @ApiResponse(description = "Bad Request", responseCode = "400", content = @Content),
+        @ApiResponse(description = "Unauthorized", responseCode = "401", content = @Content),
+        @ApiResponse(description = "Internal Error", responseCode = "500", content = @Content),
+      })
+  ResponseEntity<PaginationResponseDTO<ExpenseSourceResponseDTO>> list(Pageable pageable);
 
-    return ResponseEntity.status(HttpStatus.CREATED).body(expenseSourceService.create(requestDTO));
-  }
-
-  @PutMapping("/{expenseSourceId}")
-  public ResponseEntity<ExpenseSourceResponseDTO> update(
-      @PathVariable(name = "expenseSourceId") Long expenseSourceId,
-      @Valid @RequestBody ExpenseSourceRequestDTO requestDTO) {
-
-    return ResponseEntity.ok(expenseSourceService.update(expenseSourceId, requestDTO));
-  }
-
-  @GetMapping
-  public ResponseEntity<PaginationResponseDTO<ExpenseSourceResponseDTO>> list(Pageable pageable) {
-    Long mockedUserId = 1L;
-
-    return ResponseEntity.ok(expenseSourceService.list(mockedUserId, pageable));
-  }
-
-  @GetMapping("/{expenseSourceId}")
-  public ResponseEntity<ExpenseSourceResponseDTO> findById(
-      @PathVariable(name = "expenseSourceId") Long expenseSourceId) {
-    Long mockedUserId = 1L;
-
-    return ResponseEntity.ok(expenseSourceService.findById(mockedUserId, expenseSourceId));
-  }
+  @Operation(
+      summary = "Gets a expense source by id",
+      description = "Gets a expense source by id by passing a expense id as a path variable",
+      responses = {
+        @ApiResponse(
+            description = "Success",
+            responseCode = "200",
+            content = @Content(schema = @Schema(implementation = ExpenseSourceResponseDTO.class))),
+        @ApiResponse(description = "Bad Request", responseCode = "400", content = @Content),
+        @ApiResponse(description = "Unauthorized", responseCode = "401", content = @Content),
+        @ApiResponse(description = "Internal Error", responseCode = "500", content = @Content),
+      })
+  ResponseEntity<ExpenseSourceResponseDTO> findById(Long expenseSourceId);
 }

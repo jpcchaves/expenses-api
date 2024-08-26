@@ -7,6 +7,7 @@ import com.expenses.app.domain.models.ExpenseSource;
 import com.expenses.app.domain.models.User;
 import com.expenses.app.exception.BadRequestException;
 import com.expenses.app.exception.ResourceNotFoundException;
+import com.expenses.app.helpers.AuthHelper;
 import com.expenses.app.persistence.repository.ExpenseSourceRepository;
 import com.expenses.app.persistence.repository.UserRepository;
 import com.expenses.app.service.ExpenseSourceService;
@@ -20,17 +21,26 @@ public class ExpenseSourceServiceImpl implements ExpenseSourceService {
 
   private final ExpenseSourceRepository expenseSourceRepository;
   private final UserRepository userRepository;
+  private final AuthHelper authHelper;
 
   public ExpenseSourceServiceImpl(
-      ExpenseSourceRepository expenseSourceRepository, UserRepository userRepository) {
+      ExpenseSourceRepository expenseSourceRepository,
+      UserRepository userRepository,
+      AuthHelper authHelper) {
     this.expenseSourceRepository = expenseSourceRepository;
     this.userRepository = userRepository;
+    this.authHelper = authHelper;
   }
 
   @Override
   public ExpenseSourceResponseDTO create(ExpenseSourceRequestDTO requestDTO) {
 
-    ExpenseSource expenseSource = new ExpenseSource(requestDTO.getName());
+    User user =
+        userRepository
+            .findById(authHelper.getUserDetails().getId())
+            .orElseThrow(() -> new BadRequestException("Usuário não encontrado!"));
+
+    ExpenseSource expenseSource = new ExpenseSource(requestDTO.getName(), user);
 
     expenseSource = expenseSourceRepository.save(expenseSource);
 
@@ -42,7 +52,7 @@ public class ExpenseSourceServiceImpl implements ExpenseSourceService {
 
     User user =
         userRepository
-            .findById(requestDTO.getUserId())
+            .findById(authHelper.getUserDetails().getId())
             .orElseThrow(() -> new BadRequestException("Usuário não encontrado!"));
 
     ExpenseSource expenseSource =
@@ -61,7 +71,8 @@ public class ExpenseSourceServiceImpl implements ExpenseSourceService {
   @Override
   public PaginationResponseDTO<ExpenseSourceResponseDTO> list(Pageable pageable) {
 
-    Page<ExpenseSource> expenseSourcePage = expenseSourceRepository.findAll(pageable);
+    Page<ExpenseSource> expenseSourcePage =
+        expenseSourceRepository.findAll(authHelper.getUserDetails().getId(), pageable);
 
     List<ExpenseSourceResponseDTO> sourceResponseDTOList =
         expenseSourcePage.getContent().stream()

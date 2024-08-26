@@ -7,6 +7,7 @@ import com.expenses.app.domain.models.Expense;
 import com.expenses.app.domain.models.ExpenseSource;
 import com.expenses.app.domain.models.User;
 import com.expenses.app.exception.ResourceNotFoundException;
+import com.expenses.app.helpers.AuthHelper;
 import com.expenses.app.persistence.repository.ExpenseRepository;
 import com.expenses.app.persistence.repository.ExpenseSourceRepository;
 import com.expenses.app.persistence.repository.UserRepository;
@@ -22,14 +23,17 @@ public class ExpenseServiceImpl implements ExpenseService {
   private final ExpenseRepository expenseRepository;
   private final UserRepository userRepository;
   private final ExpenseSourceRepository expenseSourceRepository;
+  private final AuthHelper authHelper;
 
   public ExpenseServiceImpl(
       ExpenseRepository expenseRepository,
       UserRepository userRepository,
-      ExpenseSourceRepository expenseSourceRepository) {
+      ExpenseSourceRepository expenseSourceRepository,
+      AuthHelper authHelper) {
     this.expenseRepository = expenseRepository;
     this.userRepository = userRepository;
     this.expenseSourceRepository = expenseSourceRepository;
+    this.authHelper = authHelper;
   }
 
   @Override
@@ -37,7 +41,7 @@ public class ExpenseServiceImpl implements ExpenseService {
 
     User user =
         userRepository
-            .findById(requestDTO.getUserId())
+            .findById(authHelper.getUserDetails().getId())
             .orElseThrow(() -> new ResourceNotFoundException("Usuário não encontrado!"));
 
     ExpenseSource expenseSource =
@@ -68,7 +72,7 @@ public class ExpenseServiceImpl implements ExpenseService {
 
     User user =
         userRepository
-            .findById(requestDTO.getUserId())
+            .findById(authHelper.getUserDetails().getId())
             .orElseThrow(() -> new ResourceNotFoundException("Usuário não encontrado!"));
 
     ExpenseSource expenseSource =
@@ -90,7 +94,8 @@ public class ExpenseServiceImpl implements ExpenseService {
   @Override
   public PaginationResponseDTO<ExpenseResponseDTO> list(Pageable pageable) {
 
-    Page<Expense> expensesPage = expenseRepository.findAll(pageable);
+    Page<Expense> expensesPage =
+        expenseRepository.findAll(pageable, authHelper.getUserDetails().getId());
 
     List<ExpenseResponseDTO> expenseResponseDTOList =
         expensesPage.getContent().stream()

@@ -1,34 +1,46 @@
 package com.expenses.app.controller;
 
-import com.expenses.app.domain.dto.common.PaginationResponseDTO;
+import com.expenses.app.domain.dto.expense.ExpenseResponseDTO;
 import com.expenses.app.domain.dto.user.UserRequestDTO;
 import com.expenses.app.domain.dto.user.UserResponseDTO;
-import com.expenses.app.service.UserService;
-import jakarta.validation.Valid;
-import org.springframework.http.HttpStatus;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
 
-@RestController
-@RequestMapping("/api/v1/users")
-public class UserController {
+@Tag(name = "User Controller")
+@SecurityRequirement(name = "Bearer Authentication")
+public interface UserController {
 
-  private final UserService userService;
+  @Operation(
+      summary = "Creates a new user",
+      description = "Creates a new user by passing a JSON representation of UserRequestDTO",
+      responses = {
+        @ApiResponse(
+            description = "Created",
+            responseCode = "201",
+            content = @Content(schema = @Schema(implementation = ExpenseResponseDTO.class))),
+        @ApiResponse(description = "Bad Request", responseCode = "400", content = @Content),
+        @ApiResponse(description = "Unauthorized", responseCode = "401", content = @Content),
+        @ApiResponse(description = "Internal Error", responseCode = "500", content = @Content),
+      })
+  ResponseEntity<UserResponseDTO> create(UserRequestDTO requestDTO);
 
-  public UserController(UserService userService) {
-    this.userService = userService;
-  }
-
-  @PostMapping
-  public ResponseEntity<UserResponseDTO> create(@Valid @RequestBody UserRequestDTO requestDTO) {
-
-    return ResponseEntity.status(HttpStatus.CREATED).body(userService.create(requestDTO));
-  }
-
-  @PutMapping("/{userId}")
-  public ResponseEntity<UserResponseDTO> update(
-      @PathVariable(name = "userId") Long userId, @Valid @RequestBody UserRequestDTO requestDTO) {
-
-    return ResponseEntity.ok(userService.update(userId, requestDTO));
-  }
+  @Operation(
+      summary = "Updates a user",
+      description =
+          "Updates a user by passing a user ID and  a JSON representation of ExpenseRequestDTO",
+      responses = {
+        @ApiResponse(
+            description = "Success",
+            responseCode = "200",
+            content = @Content(schema = @Schema(implementation = ExpenseResponseDTO.class))),
+        @ApiResponse(description = "Bad Request", responseCode = "400", content = @Content),
+        @ApiResponse(description = "Unauthorized", responseCode = "401", content = @Content),
+        @ApiResponse(description = "Internal Error", responseCode = "500", content = @Content),
+      })
+  ResponseEntity<UserResponseDTO> update(Long userId, UserRequestDTO requestDTO);
 }
