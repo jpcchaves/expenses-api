@@ -1,5 +1,6 @@
 package com.expenses.app.controller.impl;
 
+import com.expenses.app.controller.UserController;
 import com.expenses.app.domain.dto.user.UserRequestDTO;
 import com.expenses.app.domain.dto.user.UserResponseDTO;
 import com.expenses.app.service.UserService;
@@ -10,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/v1/users")
-public class UserControllerImpl {
+public class UserControllerImpl implements UserController {
 
   private final UserService userService;
 
@@ -18,12 +19,14 @@ public class UserControllerImpl {
     this.userService = userService;
   }
 
+  @Override
   @PostMapping
   public ResponseEntity<UserResponseDTO> create(@Valid @RequestBody UserRequestDTO requestDTO) {
 
     return ResponseEntity.status(HttpStatus.CREATED).body(userService.create(requestDTO));
   }
 
+  @Override
   @PutMapping("/{userId}")
   public ResponseEntity<UserResponseDTO> update(
       @PathVariable(name = "userId") Long userId, @Valid @RequestBody UserRequestDTO requestDTO) {
