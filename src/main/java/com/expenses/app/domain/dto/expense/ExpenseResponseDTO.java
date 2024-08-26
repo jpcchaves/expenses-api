@@ -1,12 +1,15 @@
 package com.expenses.app.domain.dto.expense;
 
-import java.math.BigDecimal;
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import java.time.LocalDate;
 
 public class ExpenseResponseDTO {
 
   private Long id;
   private String expenseTitle;
+
+  @JsonFormat(pattern = "dd/MM/yyyy")
   private LocalDate dueDate;
 
   public ExpenseResponseDTO() {}
