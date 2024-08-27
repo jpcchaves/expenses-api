@@ -4,8 +4,10 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import com.expenses.app.config.AbstractTestContainerConfig;
 import com.expenses.app.domain.models.ExpenseSource;
+import com.expenses.app.domain.models.Role;
 import com.expenses.app.domain.models.User;
 import java.util.Optional;
+import java.util.Set;
 import net.datafaker.Faker;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -26,9 +28,12 @@ class ExpenseSourceRepositoryTest extends AbstractTestContainerConfig {
 
   @Autowired private UserRepository userRepository;
 
+  @Autowired private RoleRepository roleRepository;
+
   private Faker faker;
 
   private User user;
+  private Role role;
 
   private ExpenseSource expenseSource;
 
@@ -41,7 +46,11 @@ class ExpenseSourceRepositoryTest extends AbstractTestContainerConfig {
 
     expenseSourceName = faker.lorem().characters(10);
 
-    user = userRepository.findByEmail("test@test.com").get();
+    role = roleRepository.save(new Role("ROLE_TEST"));
+
+    user =
+        userRepository.save(
+            new User("User test", "usertest@test.com", faker.number().digits(20), Set.of(role)));
 
     expenseSource =
         expenseSourceRepository.saveAndFlush(new ExpenseSource(expenseSourceName, user));
@@ -74,10 +83,11 @@ class ExpenseSourceRepositoryTest extends AbstractTestContainerConfig {
     // Then
     assertNotNull(expenseSourcePage);
 
-    assertEquals(2, expenseSourcePage.getContent().size());
+    assertEquals(1, expenseSourcePage.getContent().size());
   }
 
-  @DisplayName("")
+  @DisplayName(
+      "Test given userId and expenseSourceId when findById should return ExpenseSource object")
   @Test
   void testGivenUserIdAndExpenseSourceId_WhenFindById_ShouldReturnExpenseSourceObject() {
 
