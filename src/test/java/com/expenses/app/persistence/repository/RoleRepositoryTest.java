@@ -22,18 +22,24 @@ class RoleRepositoryTest extends AbstractTestContainerConfig {
   @BeforeEach
   void setup() {
 
-    role = new Role("ROLE_UNIT_TEST");
+    role = roleRepository.save(new Role("ROLE_TEST"));
   }
 
-  @DisplayName("Test given role when save should return role object")
+  @DisplayName("Test save role")
   @Test
-  void testGivenRole_WhenSave_ShouldReturnRoleObject() {
+  void testSaveRole() {
 
-    // Given / When
-    role = roleRepository.save(role);
-
-    // Then
     assertNotNull(role);
-    assertEquals("ROLE_UNIT_TEST", role.getName());
+    assertEquals("ROLE_TEST", role.getName());
+  }
+
+  @DisplayName("Test find role by name")
+  @Test
+  void testFindRoleByName() {
+
+    Role roleByName = roleRepository.findByName(role.getName()).get();
+
+    assertNotNull(roleByName);
+    assertEquals("ROLE_TEST", role.getName());
   }
 }
