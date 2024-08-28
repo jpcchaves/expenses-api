@@ -56,9 +56,9 @@ class ExpenseSourceRepositoryTest extends AbstractTestContainerConfig {
         expenseSourceRepository.saveAndFlush(new ExpenseSource(expenseSourceName, user));
   }
 
-  @DisplayName("Test given userId and Name when findByName then should return ExpenseSource object")
+  @DisplayName("Test find expense source by name")
   @Test
-  void testGivenUserIdAndName_WhenFindByName_ThenShouldReturnExpenseSourceObject() {
+  void testFindExpenseSourceByName() {
 
     // Given / When
     Optional<ExpenseSource> expenseSource =
@@ -70,9 +70,9 @@ class ExpenseSourceRepositoryTest extends AbstractTestContainerConfig {
     assertEquals(user.getId(), expenseSource.get().getUser().getId());
   }
 
-  @DisplayName("Test given userId and Pageable when find all should return Page of ExpenseSource")
+  @DisplayName("Test find all expense sources")
   @Test
-  void testGivenUserIdAndPageable_WhenFindAll_ShouldReturnPageObject() {
+  void testFindAllExpenseSources() {
 
     // Given
     Pageable pageable = PageRequest.of(0, 20, Sort.by(Sort.Direction.ASC, "created_at"));
@@ -86,10 +86,9 @@ class ExpenseSourceRepositoryTest extends AbstractTestContainerConfig {
     assertEquals(1, expenseSourcePage.getContent().size());
   }
 
-  @DisplayName(
-      "Test given userId and expenseSourceId when findById should return ExpenseSource object")
+  @DisplayName("Test find expense source by id")
   @Test
-  void testGivenUserIdAndExpenseSourceId_WhenFindById_ShouldReturnExpenseSourceObject() {
+  void testFindExpenseSourceById() {
 
     // Given /  When
     ExpenseSource expenseSourceById =
