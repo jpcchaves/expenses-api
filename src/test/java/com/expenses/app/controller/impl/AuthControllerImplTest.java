@@ -137,4 +137,28 @@ class AuthControllerImplTest extends AbstractTestContainerConfig {
 
     assertEquals(400, response.statusCode());
   }
+
+  @DisplayName("Test register unsuccessful not equal passwords")
+  @Test
+  @Order(4)
+  void testRegisterUnsuccessfulNotEqualPasswords() throws JsonProcessingException {
+
+    registerRequestDTO.setEmail(faker.internet().emailAddress());
+    registerRequestDTO.setPassword(faker.number().digits(12));
+
+    Response response =
+        given()
+            .spec(requestSpecification)
+            .contentType(TestsConfigConstants.CONTENT_TYPE_JSON)
+            .body(registerRequestDTO)
+            .when()
+            .post("/register");
+
+    ExceptionResponseDTO exceptionResponseDTO =
+        mapper.readValue(response.asString(), ExceptionResponseDTO.class);
+
+    assertEquals("As senhas não conferem!", exceptionResponseDTO.getMessage());
+
+    assertEquals(400, response.statusCode());
+  }
 }
