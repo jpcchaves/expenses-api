@@ -1,6 +1,7 @@
 package com.expenses.app.service.impl;
 
 import com.expenses.app.domain.dto.common.PaginationResponseDTO;
+import com.expenses.app.domain.dto.common.ResponseDTO;
 import com.expenses.app.domain.dto.expense.ExpenseRequestDTO;
 import com.expenses.app.domain.dto.expense.ExpenseResponseDTO;
 import com.expenses.app.domain.models.Expense;
@@ -125,5 +126,23 @@ public class ExpenseServiceImpl implements ExpenseService {
             .orElseThrow(() -> new ResourceNotFoundException("Despesa não encontrada!"));
 
     return new ExpenseResponseDTO(expense.getId(), expense.getExpenseTitle(), expense.getDueDate());
+  }
+
+  @Override
+  public ResponseDTO<?> toggleNotificationPreference(Long expenseId) {
+
+    Expense expense =
+        expenseRepository
+            .findById(expenseId)
+            .orElseThrow(() -> new ResourceNotFoundException("Despesa não encontrada!"));
+
+    Boolean prevActive = expense.getNotificationActive();
+
+    expense.setNotificationActive(!prevActive);
+
+    expenseRepository.save(expense);
+
+    return ResponseDTO.withMessage(
+        "Preferência de notificação atualizada para a despesa: " + expense.getExpenseTitle());
   }
 }

@@ -1,6 +1,7 @@
 package com.expenses.app.service;
 
 import com.expenses.app.domain.dto.common.PaginationResponseDTO;
+import com.expenses.app.domain.dto.common.ResponseDTO;
 import com.expenses.app.domain.dto.expense.ExpenseRequestDTO;
 import com.expenses.app.domain.dto.expense.ExpenseResponseDTO;
 import org.springframework.data.domain.Pageable;
@@ -14,4 +15,6 @@ public interface ExpenseService {
   PaginationResponseDTO<ExpenseResponseDTO> list(Pageable pageable);
 
   ExpenseResponseDTO findById(Long expenseId);
+
+  ResponseDTO<?> toggleNotificationPreference(Long expenseId);
 }
