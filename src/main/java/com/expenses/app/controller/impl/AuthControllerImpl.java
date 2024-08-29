@@ -7,6 +7,7 @@ import com.expenses.app.domain.dto.auth.RegisterRequestDTO;
 import com.expenses.app.domain.dto.common.ResponseDTO;
 import com.expenses.app.service.AuthService;
 import jakarta.validation.Valid;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -35,6 +36,6 @@ public class AuthControllerImpl implements AuthController {
   public ResponseEntity<ResponseDTO<?>> register(
       @Valid @RequestBody RegisterRequestDTO requestDTO) {
 
-    return ResponseEntity.ok(authService.register(requestDTO));
+    return ResponseEntity.status(HttpStatus.CREATED).body(authService.register(requestDTO));
   }
 }

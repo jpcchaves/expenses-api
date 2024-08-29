@@ -8,7 +8,7 @@ import com.expenses.app.domain.dto.common.ResponseDTO;
 import com.expenses.app.domain.models.Role;
 import com.expenses.app.domain.models.User;
 import com.expenses.app.exception.BadRequestException;
-import com.expenses.app.exception.InternalServerError;
+import com.expenses.app.exception.InternalServerErrorException;
 import com.expenses.app.factory.user.UserFactory;
 import com.expenses.app.persistence.repository.RoleRepository;
 import com.expenses.app.persistence.repository.UserRepository;
@@ -72,7 +72,9 @@ public class AuthServiceImpl implements AuthService {
         roleRepository
             .findByName("ROLE_USER")
             .orElseThrow(
-                () -> new InternalServerError("Ocorreu um erro interno. Contate o suporte!"));
+                () ->
+                    new InternalServerErrorException(
+                        "Ocorreu um erro interno. Contate o suporte!"));
 
     String encodedPassword = passwordEncoder.encode(requestDTO.getPassword());
 
@@ -116,7 +118,8 @@ public class AuthServiceImpl implements AuthService {
 
       logger.error(ex.getMessage());
 
-      throw new InternalServerError("Ocorreu um erro ao realizar a autenticação do usuário!");
+      throw new InternalServerErrorException(
+          "Ocorreu um erro ao realizar a autenticação do usuário!");
     }
   }
 }

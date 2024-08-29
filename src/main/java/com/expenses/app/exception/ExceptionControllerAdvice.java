@@ -83,4 +83,17 @@ public class ExceptionControllerAdvice extends ResponseEntityExceptionHandler {
 
     return new ResponseEntity<>(exceptionResponse, HttpStatus.NOT_FOUND);
   }
+
+  @ExceptionHandler(InternalServerErrorException.class)
+  public final ResponseEntity<ExceptionResponseDTO> handleInternalServerErrorException(
+      InternalServerErrorException ex, WebRequest request) {
+
+    ExceptionResponseDTO exceptionResponse =
+        ExceptionResponseDTO.builder()
+            .setMessage(ex.getMessage())
+            .setDetails(request.getDescription(false))
+            .build();
+
+    return new ResponseEntity<>(exceptionResponse, HttpStatus.INTERNAL_SERVER_ERROR);
+  }
 }
