@@ -28,3 +28,11 @@ spring:
   web:
     locale-resolver: fixed
     locale: pt_BR
+springdoc:
+  swagger-ui:
+    path: "/swagger-ui"
+  packages-to-scan:
+    - com.expenses.app.controller
+app:
+  jwt-secret: ${JWT_SECRET}
+  jwt-expiration-milliseconds: ${JWT_EXPIRATION}
