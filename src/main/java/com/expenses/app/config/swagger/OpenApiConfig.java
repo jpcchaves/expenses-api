@@ -33,6 +33,6 @@ public class OpenApiConfig {
                 .description("REST API built to manage expenses")
                 .termsOfService("https://jpcchaves-dev.netlify.app")
                 .license(new License().name("MIT").url("https://jpcchaves-dev.netlify.app")))
-        .schemaRequirement("Bearer Security Requirement", bearerSecurityRequirement);
+        .schemaRequirement("Bearer Authentication", bearerSecurityRequirement);
   }
 }

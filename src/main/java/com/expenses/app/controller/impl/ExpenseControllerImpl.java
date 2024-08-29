@@ -2,6 +2,7 @@ package com.expenses.app.controller.impl;
 
 import com.expenses.app.controller.ExpenseController;
 import com.expenses.app.domain.dto.common.PaginationResponseDTO;
+import com.expenses.app.domain.dto.common.ResponseDTO;
 import com.expenses.app.domain.dto.expense.ExpenseRequestDTO;
 import com.expenses.app.domain.dto.expense.ExpenseResponseDTO;
 import com.expenses.app.service.ExpenseService;
@@ -51,5 +52,13 @@ public class ExpenseControllerImpl implements ExpenseController {
       @PathVariable(name = "expenseId") Long expenseId) {
 
     return ResponseEntity.ok(expenseService.findById(expenseId));
+  }
+
+  @Override
+  @PatchMapping("/{expenseId}")
+  public ResponseEntity<ResponseDTO<?>> toggleNotificationPreference(
+      @PathVariable(name = "expenseId") Long expenseId) {
+
+    return ResponseEntity.ok(expenseService.toggleNotificationPreference(expenseId));
   }
 }

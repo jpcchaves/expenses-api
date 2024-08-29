@@ -1,6 +1,6 @@
 package com.expenses.app.security;
 
-import com.expenses.app.exception.InternalServerError;
+import com.expenses.app.exception.InternalServerErrorException;
 import java.util.Arrays;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -92,7 +92,8 @@ public class WebSecurityConfig {
       logger.error(ex.getMessage());
       logger.error(Arrays.toString(ex.getStackTrace()));
 
-      throw new InternalServerError("Ocorreu um erro inesperado processando sua requisição!");
+      throw new InternalServerErrorException(
+          "Ocorreu um erro inesperado processando sua requisição!");
     }
   }
 }

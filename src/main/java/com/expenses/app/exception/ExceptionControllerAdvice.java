@@ -1,6 +1,8 @@
 package com.expenses.app.exception;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpHeaders;
@@ -8,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -82,5 +85,47 @@ public class ExceptionControllerAdvice extends ResponseEntityExceptionHandler {
             .build();
 
     return new ResponseEntity<>(exceptionResponse, HttpStatus.NOT_FOUND);
+  }
+
+  @ExceptionHandler(InternalServerErrorException.class)
+  public final ResponseEntity<ExceptionResponseDTO> handleInternalServerErrorException(
+      InternalServerErrorException ex, WebRequest request) {
+
+    ExceptionResponseDTO exceptionResponse =
+        ExceptionResponseDTO.builder()
+            .setMessage(ex.getMessage())
+            .setDetails(request.getDescription(false))
+            .build();
+
+    return new ResponseEntity<>(exceptionResponse, HttpStatus.INTERNAL_SERVER_ERROR);
+  }
+
+  @Override
+  protected ResponseEntity<Object> handleMethodArgumentNotValid(
+      MethodArgumentNotValidException ex,
+      HttpHeaders headers,
+      HttpStatusCode status,
+      WebRequest request) {
+
+    List<String> errors = new ArrayList<>();
+
+    ex.getBindingResult()
+        .getAllErrors()
+        .forEach(
+            error -> {
+              String errorMessage;
+
+              errorMessage = error.getDefaultMessage();
+
+              errors.add(errorMessage);
+            });
+
+    ExceptionResponseDTO exceptionResponse =
+        ExceptionResponseDTO.builder()
+            .setMessage(errors.get(0))
+            .setDetails(request.getDescription(false))
+            .build();
+
+    return new ResponseEntity<>(exceptionResponse, HttpStatus.BAD_REQUEST);
   }
 }
