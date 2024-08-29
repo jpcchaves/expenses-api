@@ -1,6 +1,7 @@
 package com.expenses.app.controller;
 
 import com.expenses.app.domain.dto.common.PaginationResponseDTO;
+import com.expenses.app.domain.dto.common.ResponseDTO;
 import com.expenses.app.domain.dto.expense.ExpenseRequestDTO;
 import com.expenses.app.domain.dto.expense.ExpenseResponseDTO;
 import io.swagger.v3.oas.annotations.Operation;
@@ -76,4 +77,18 @@ public interface ExpenseController {
         @ApiResponse(description = "Internal Error", responseCode = "500", content = @Content),
       })
   ResponseEntity<ExpenseResponseDTO> findById(Long expenseId);
+
+  @Operation(
+      summary = "Updates a expense notification preference",
+      description = "Updates a expense notification preference by passing the expense ID",
+      responses = {
+        @ApiResponse(
+            description = "Success",
+            responseCode = "200",
+            content = @Content(schema = @Schema(implementation = ResponseDTO.class))),
+        @ApiResponse(description = "Bad Request", responseCode = "400", content = @Content),
+        @ApiResponse(description = "Unauthorized", responseCode = "401", content = @Content),
+        @ApiResponse(description = "Internal Error", responseCode = "500", content = @Content),
+      })
+  ResponseEntity<ResponseDTO<?>> toggleNotificationPreference(Long expenseId);
 }
