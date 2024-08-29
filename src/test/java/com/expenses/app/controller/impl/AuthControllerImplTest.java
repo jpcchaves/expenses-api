@@ -10,6 +10,7 @@ import com.expenses.app.domain.dto.auth.LoginResponseDTO;
 import com.expenses.app.domain.dto.auth.RegisterRequestDTO;
 import com.expenses.app.domain.dto.common.ResponseDTO;
 import com.expenses.app.domain.models.Role;
+import com.expenses.app.exception.ExceptionResponseDTO;
 import com.expenses.app.persistence.repository.RoleRepository;
 import com.expenses.app.security.JwtUtils;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -112,5 +113,28 @@ class AuthControllerImplTest extends AbstractTestContainerConfig {
     assertEquals(registerRequestDTO.getEmail(), loginResponseDTO.getData().getUser().getEmail());
     assertEquals(registerRequestDTO.getName(), loginResponseDTO.getData().getUser().getName());
     assertTrue(jwtUtils.isTokenValid(loginResponseDTO.getData().getAccessToken()));
+  }
+
+  @DisplayName("Test register unsuccessful duplicated email")
+  @Test
+  @Order(3)
+  void testRegisterUnsuccessfulDuplicatedEmail() throws JsonProcessingException {
+
+    Response response =
+        given()
+            .spec(requestSpecification)
+            .contentType(TestsConfigConstants.CONTENT_TYPE_JSON)
+            .body(registerRequestDTO)
+            .when()
+            .post("/register");
+
+    ExceptionResponseDTO exceptionResponseDTO =
+        mapper.readValue(response.asString(), ExceptionResponseDTO.class);
+
+    assertEquals(
+        "Já existe um usuário cadastrado com o email informado!",
+        exceptionResponseDTO.getMessage());
+
+    assertEquals(400, response.statusCode());
   }
 }
