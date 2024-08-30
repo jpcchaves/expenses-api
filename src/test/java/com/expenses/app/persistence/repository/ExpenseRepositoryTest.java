@@ -5,7 +5,6 @@ import static org.junit.jupiter.api.Assertions.*;
 import com.expenses.app.config.AbstractTestContainerConfig;
 import com.expenses.app.domain.enums.ExpenseFrequency;
 import com.expenses.app.domain.models.Expense;
-import com.expenses.app.domain.models.ExpenseSource;
 import com.expenses.app.domain.models.Role;
 import com.expenses.app.domain.models.User;
 import java.time.LocalDate;
@@ -29,14 +28,11 @@ class ExpenseRepositoryTest extends AbstractTestContainerConfig {
 
   @Autowired private UserRepository userRepository;
 
-  @Autowired private ExpenseSourceRepository expenseSourceRepository;
-
   @Autowired private RoleRepository roleRepository;
 
   private Faker faker;
 
   private User user;
-  private ExpenseSource expenseSource;
 
   @BeforeEach
   void setupEach() {
@@ -46,44 +42,30 @@ class ExpenseRepositoryTest extends AbstractTestContainerConfig {
 
     user = userRepository.saveAndFlush(new User("Test", "test@test.com", "123456", Set.of(role)));
 
-    expenseSource =
-        expenseSourceRepository.saveAndFlush(new ExpenseSource("Fatura do Cartao", user));
-
     List<Expense> yearlyExpenses =
         List.of(
             new Expense(
                 faker.lorem().characters(20),
                 user,
-                expenseSource,
                 LocalDate.now().plusDays(1),
                 Boolean.TRUE,
                 ExpenseFrequency.YEARLY));
 
     List<Expense> monthlyExpenses =
         List.of(
-            new Expense(
-                faker.lorem().characters(20), user, expenseSource, LocalDate.now().plusDays(2)),
-            new Expense(
-                faker.lorem().characters(20), user, expenseSource, LocalDate.now().plusDays(3)),
-            new Expense(
-                faker.lorem().characters(20), user, expenseSource, LocalDate.now().plusDays(4)),
-            new Expense(
-                faker.lorem().characters(20), user, expenseSource, LocalDate.now().plusDays(5)),
-            new Expense(
-                faker.lorem().characters(20), user, expenseSource, LocalDate.now().plusDays(6)));
+            new Expense(faker.lorem().characters(20), user, LocalDate.now().plusDays(2)),
+            new Expense(faker.lorem().characters(20), user, LocalDate.now().plusDays(3)),
+            new Expense(faker.lorem().characters(20), user, LocalDate.now().plusDays(4)),
+            new Expense(faker.lorem().characters(20), user, LocalDate.now().plusDays(5)),
+            new Expense(faker.lorem().characters(20), user, LocalDate.now().plusDays(6)));
 
     List<Expense> previousMonthMonthlyExpenses =
         List.of(
-            new Expense(
-                faker.lorem().characters(20), user, expenseSource, LocalDate.now().minusMonths(1)),
-            new Expense(
-                faker.lorem().characters(20), user, expenseSource, LocalDate.now().minusMonths(1)),
-            new Expense(
-                faker.lorem().characters(20), user, expenseSource, LocalDate.now().minusMonths(1)),
-            new Expense(
-                faker.lorem().characters(20), user, expenseSource, LocalDate.now().minusMonths(1)),
-            new Expense(
-                faker.lorem().characters(20), user, expenseSource, LocalDate.now().minusMonths(1)));
+            new Expense(faker.lorem().characters(20), user, LocalDate.now().minusMonths(1)),
+            new Expense(faker.lorem().characters(20), user, LocalDate.now().minusMonths(1)),
+            new Expense(faker.lorem().characters(20), user, LocalDate.now().minusMonths(1)),
+            new Expense(faker.lorem().characters(20), user, LocalDate.now().minusMonths(1)),
+            new Expense(faker.lorem().characters(20), user, LocalDate.now().minusMonths(1)));
 
     List<Expense> mockExpensesList =
         Stream.of(yearlyExpenses, monthlyExpenses, previousMonthMonthlyExpenses)

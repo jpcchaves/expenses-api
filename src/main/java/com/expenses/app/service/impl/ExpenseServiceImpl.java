@@ -5,12 +5,10 @@ import com.expenses.app.domain.dto.common.ResponseDTO;
 import com.expenses.app.domain.dto.expense.ExpenseRequestDTO;
 import com.expenses.app.domain.dto.expense.ExpenseResponseDTO;
 import com.expenses.app.domain.models.Expense;
-import com.expenses.app.domain.models.ExpenseSource;
 import com.expenses.app.domain.models.User;
 import com.expenses.app.exception.ResourceNotFoundException;
 import com.expenses.app.helpers.AuthHelper;
 import com.expenses.app.persistence.repository.ExpenseRepository;
-import com.expenses.app.persistence.repository.ExpenseSourceRepository;
 import com.expenses.app.persistence.repository.UserRepository;
 import com.expenses.app.service.ExpenseService;
 import java.util.List;
@@ -23,17 +21,12 @@ public class ExpenseServiceImpl implements ExpenseService {
 
   private final ExpenseRepository expenseRepository;
   private final UserRepository userRepository;
-  private final ExpenseSourceRepository expenseSourceRepository;
   private final AuthHelper authHelper;
 
   public ExpenseServiceImpl(
-      ExpenseRepository expenseRepository,
-      UserRepository userRepository,
-      ExpenseSourceRepository expenseSourceRepository,
-      AuthHelper authHelper) {
+      ExpenseRepository expenseRepository, UserRepository userRepository, AuthHelper authHelper) {
     this.expenseRepository = expenseRepository;
     this.userRepository = userRepository;
-    this.expenseSourceRepository = expenseSourceRepository;
     this.authHelper = authHelper;
   }
 
@@ -45,16 +38,10 @@ public class ExpenseServiceImpl implements ExpenseService {
             .findById(authHelper.getUserDetails().getId())
             .orElseThrow(() -> new ResourceNotFoundException("Usuário não encontrado!"));
 
-    ExpenseSource expenseSource =
-        expenseSourceRepository
-            .findById(requestDTO.getExpenseSourceId())
-            .orElseThrow(() -> new ResourceNotFoundException("Fonte de custo não encontrado!"));
-
     Expense expense =
         new Expense(
             requestDTO.getExpenseTitle(),
             user,
-            expenseSource,
             requestDTO.getDueDate(),
             requestDTO.getExpenseFrequency());
 
@@ -76,14 +63,8 @@ public class ExpenseServiceImpl implements ExpenseService {
             .findById(authHelper.getUserDetails().getId())
             .orElseThrow(() -> new ResourceNotFoundException("Usuário não encontrado!"));
 
-    ExpenseSource expenseSource =
-        expenseSourceRepository
-            .findById(requestDTO.getExpenseSourceId())
-            .orElseThrow(() -> new ResourceNotFoundException("Fonte de custo não encontrado!"));
-
     expense.setExpenseTitle(requestDTO.getExpenseTitle());
     expense.setUser(user);
-    expense.setExpenseSource(expenseSource);
     expense.setDueDate(requestDTO.getDueDate());
     expense.setExpenseFrequency(requestDTO.getExpenseFrequency());
 

@@ -36,13 +36,6 @@ public class Expense implements Serializable {
       foreignKey = @ForeignKey(value = ConstraintMode.CONSTRAINT, name = "user_fk"))
   private User user;
 
-  @ManyToOne(optional = false, fetch = FetchType.LAZY)
-  @JoinColumn(
-      name = "expense_source_id",
-      nullable = false,
-      foreignKey = @ForeignKey(value = ConstraintMode.CONSTRAINT, name = "expense_source_fk"))
-  private ExpenseSource expenseSource;
-
   @Column(nullable = false)
   @Temporal(TemporalType.DATE)
   private LocalDate dueDate;
@@ -64,35 +57,26 @@ public class Expense implements Serializable {
       Long id,
       String expenseTitle,
       User user,
-      ExpenseSource expenseSource,
       LocalDate dueDate,
       LocalDateTime createdAt,
       LocalDateTime updatedAt) {
     this.id = id;
     this.expenseTitle = expenseTitle;
     this.user = user;
-    this.expenseSource = expenseSource;
     this.dueDate = dueDate;
     this.createdAt = createdAt;
     this.updatedAt = updatedAt;
   }
 
-  public Expense(String expenseTitle, User user, ExpenseSource expenseSource, LocalDate dueDate) {
+  public Expense(String expenseTitle, User user, LocalDate dueDate) {
     this.expenseTitle = expenseTitle;
     this.user = user;
-    this.expenseSource = expenseSource;
     this.dueDate = dueDate;
   }
 
-  public Expense(
-      String expenseTitle,
-      User user,
-      ExpenseSource expenseSource,
-      LocalDate dueDate,
-      Boolean notificationActive) {
+  public Expense(String expenseTitle, User user, LocalDate dueDate, Boolean notificationActive) {
     this.expenseTitle = expenseTitle;
     this.user = user;
-    this.expenseSource = expenseSource;
     this.dueDate = dueDate;
     this.notificationActive = notificationActive;
   }
@@ -100,27 +84,20 @@ public class Expense implements Serializable {
   public Expense(
       String expenseTitle,
       User user,
-      ExpenseSource expenseSource,
       LocalDate dueDate,
       Boolean notificationActive,
       ExpenseFrequency expenseFrequency) {
     this.expenseTitle = expenseTitle;
     this.user = user;
-    this.expenseSource = expenseSource;
     this.dueDate = dueDate;
     this.notificationActive = notificationActive;
     this.expenseFrequency = expenseFrequency;
   }
 
   public Expense(
-      String expenseTitle,
-      User user,
-      ExpenseSource expenseSource,
-      LocalDate dueDate,
-      ExpenseFrequency expenseFrequency) {
+      String expenseTitle, User user, LocalDate dueDate, ExpenseFrequency expenseFrequency) {
     this.expenseTitle = expenseTitle;
     this.user = user;
-    this.expenseSource = expenseSource;
     this.dueDate = dueDate;
     this.expenseFrequency = expenseFrequency;
   }
@@ -147,14 +124,6 @@ public class Expense implements Serializable {
 
   public void setUser(User user) {
     this.user = user;
-  }
-
-  public ExpenseSource getExpenseSource() {
-    return expenseSource;
-  }
-
-  public void setExpenseSource(ExpenseSource expenseSource) {
-    this.expenseSource = expenseSource;
   }
 
   public LocalDate getDueDate() {
