@@ -3,7 +3,6 @@ package com.expenses.app.persistence.repository;
 import static org.junit.jupiter.api.Assertions.*;
 
 import com.expenses.app.config.AbstractTestContainerConfig;
-import com.expenses.app.domain.models.ExpenseSource;
 import com.expenses.app.domain.models.Role;
 import com.expenses.app.domain.models.User;
 import java.util.Optional;

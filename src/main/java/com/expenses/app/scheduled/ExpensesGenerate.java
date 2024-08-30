@@ -53,10 +53,7 @@ public class ExpensesGenerate {
 
       updatedMonthlyExpenses.add(
           expenseFactory.buildExpense(
-              expense.getExpenseTitle(),
-              expense.getUser(),
-              expense.getExpenseSource(),
-              updatedDueDate));
+              expense.getExpenseTitle(), expense.getUser(), updatedDueDate));
     }
 
     expenseRepository.saveAll(updatedMonthlyExpenses);

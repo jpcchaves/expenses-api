@@ -7,8 +7,6 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 
 public interface UserService extends UserDetailsService {
 
-  UserResponseDTO create(UserRequestDTO requestDTO);
-
   UserResponseDTO update(Long userId, UserRequestDTO requestDTO);
 
   User getUserByEmail(String emamil);
